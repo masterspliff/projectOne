@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Animated Renewable Energy Share Line Chart</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+        .axis {
+            font-size: 12px;
+        }
+        .line {
+            fill: none;
+            stroke: steelblue;
+            stroke-width: 2;
+        }
+        .highlighted-line {
+            fill: none;
+            stroke: orange;
+            stroke-width: 4;
+        }
+        .tooltip {
+            position: absolute;
+            background-color: white;
+            border: solid 1px #ccc;
+            padding: 5px;
+            display: none;
+        }
+        #country-selector {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Renewable Energy Share (Animated Time Graph)</h2>
+    <div>
+        <label for="country-selector">Select Country:</label>
+        <select id="country-selector"></select>
+    </div>
+    <div id="chart"></div>
+
+    <script src="./scripts/rnew.js"></script>
+
+</body>
+</html>
