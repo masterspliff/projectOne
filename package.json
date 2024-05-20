@@ -1,5 +1,6 @@
 {
   "name": "data_understand",
+  "type": "module",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -22,6 +23,7 @@
     "cookie": "^0.6.0",
     "cookie-signature": "^1.0.6",
     "csvtojson": "^2.0.10",
+    "d3": "^7.9.0",
     "debug": "^2.6.9",
     "define-data-property": "^1.1.4",
     "depd": "^2.0.0",
@@ -106,6 +108,7 @@
     "supports-color": "^5.5.0",
     "to-regex-range": "^5.0.1",
     "toidentifier": "^1.0.1",
+    "topojson": "^3.0.2",
     "touch": "^3.1.0",
     "type-is": "^1.6.18",
     "undefsafe": "^2.0.5",

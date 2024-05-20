@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { populateDataFromCSV } = require('./queries'); // Import your custom function
+const populateDataFromCSV = require('./queries');
+const queryDatabase = require('./db');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -25,8 +26,17 @@ app.post('/upload-csv', (req, res) => {
     });
 });
 
+// Example route to fetch data from the database
+app.get('/data', async (req, res) => {
+  try {
+    const results = await queryDatabase('SELECT * FROM your_table_name');
+    res.status(200).json(results);
+  } catch (err) {
+    res.status(500).send({ message: 'Failed to fetch data from the database.', error: err.message });
+  }
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
