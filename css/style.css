@@ -17,6 +17,56 @@ body {
     width: 100%;
 }
 
+/* Quote and play-button CSS  */
+
+.buttonContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh; /* Adjust as needed */
+}
+
+#startButton {
+    width: 120px;
+    height: 120px;
+    background: #222;
+    display: inline-block;
+    border-radius: 50%;
+    box-sizing: border-box; 
+}
+
+#startButton span {
+    display: block;
+    width: 0;
+    height: 0;
+    border-top: 35px solid transparent;
+    border-bottom: 40px solid transparent;
+    border-left: 65px solid #fff;
+    position: relative;
+    margin: 23px 20px 23px auto; 
+}
+
+
+
+.quote {
+    display: block;
+    text-align: center; 
+    font-size: 45px; 
+    font-family: Helvetica;
+    font-style: italic; 
+}
+.quote p {
+    transition: opacity 1s ease; 
+}
+
+#quoteRef {
+    font-size: 20px; 
+}
+
+#startButton {
+    transition: opacity 1s ease;
+}
+
 #map-container, #chart-container {
     width: 100%;
 }
@@ -81,6 +131,24 @@ body {
     }
 }
 
+
+/* Sphere CSS  */
+.graticule {
+    fill: none;
+    stroke: #444;
+    stroke-width: 0.5px;
+}
+
+.sphere {
+    fill: #0B3D91;
+    stroke: #FFF;
+    stroke-width: 1px;
+}
+
+.country {
+    stroke: #000000;
+    stroke-width: 0.3px;
+}
 
 
 @keyframes rotate {
