@@ -28,23 +28,44 @@
     margin: 23px 20px 23px auto; 
 }
 
-.quote {
-    display: block;
-    text-align: center; 
-    font-size: 45px; 
-    font-family: Helvetica;
-    font-style: italic; 
+.quoteContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 10vh;
+    font-family: helvetica;
+    font-size: 35px; 
+    font-style: bold;
 }
 
-.quote p {
-    transition: opacity 1s ease; 
+
+.fade {
+    transition: opacity 2s ease-in-out;
+    opacity: 0;
+}
+
+.fade-in {
+    opacity: 1;
+}
+
+
+.globeContainer {
+    position: absolute; 
+}
+
+#quoteThree {
+    font-size: 20px;
+    text-align: center; 
+    max-width: 55%;
 }
 
 #quoteRef {
-    margin-top: 220px;
+    margin-top: 500px;
     font-size: 15px; 
     font-family: Helvetica;
     font-style: italic;
+    transition: opacity 2s ease;
 }
 
 #startButton {
