@@ -3,7 +3,7 @@ const { json } = require('body-parser');
 const { populateDataFromCSV, ElectricityAccessData, CleanEnergyShare } = require('./queries');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 
 app.use(json());  // Simplified body-parser usage
 
