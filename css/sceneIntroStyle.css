@@ -8,6 +8,7 @@
 }
 
 #startButton {
+    margin-top: 170px;
     width: 120px;
     height: 120px;
     background: #222;
@@ -27,8 +28,6 @@
     margin: 23px 20px 23px auto; 
 }
 
-
-
 .quote {
     display: block;
     text-align: center; 
@@ -36,12 +35,16 @@
     font-family: Helvetica;
     font-style: italic; 
 }
+
 .quote p {
     transition: opacity 1s ease; 
 }
 
 #quoteRef {
-    font-size: 20px; 
+    margin-top: 220px;
+    font-size: 15px; 
+    font-family: Helvetica;
+    font-style: italic;
 }
 
 #startButton {
