@@ -1,6 +1,5 @@
 {
-  "name": "data_understand",
-  "type": "module",
+  "name": "projectOne",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -88,6 +87,7 @@
     "postgres-bytea": "^1.0.0",
     "postgres-date": "^1.0.7",
     "postgres-interval": "^1.2.0",
+    "proxy": "http://localhost:3000",
     "proxy-addr": "^2.0.7",
     "pstree.remy": "^1.1.8",
     "qs": "^6.11.0",

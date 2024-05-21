@@ -1,7 +1,31 @@
-const d3 = require('d3');
-const topojson = require('topojson');
-const { loadJSON } = require('../database/d3Promisified');
-const { fetchElectricityAccessData } = require('../database/dataFetcher');
+async function loadJSON(url) {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+  }
+  
+async function ElectricityAccessData() {
+    try {
+        const response = await fetch('http://localhost:4000/electricity-access-data'); 
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    } catch (error) {
+        console.error('Failed to fetch electricity access data:', error);
+        throw error; // Re-throw to handle it in the calling function
+    }
+};
+
+function processAccessData(rawData) {
+    let accessData = {};
+    rawData.forEach(entry => {
+        accessData[entry.GeoAreaName] = parseFloat(entry['2022']); // Use the latest year or adjust as needed
+    });
+    return accessData;
+};
 
 export default async function createGlobe() {
     // Set up dimensions
@@ -66,12 +90,13 @@ export default async function createGlobe() {
   
     try {
       // Load world map and access data
-      const [world, accessData] = await Promise.all([
+      const [world, rawAccessData] = await Promise.all([
         loadJSON("https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json"),
-        fetchElectricityAccessData()
-      ]);
-  
-      const countries = topojson.feature(world, world.objects.countries).features;
+        ElectricityAccessData()
+    ]);
+
+    const accessData = processAccessData(rawAccessData);
+    const countries = topojson.feature(world, world.objects.countries).features;
   
       // Create sphere
       svg.append("path")
