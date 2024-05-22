@@ -1,38 +1,59 @@
 async function loadJSON(url) {
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-  return response.json();
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
 }
 
 async function getAfricanCountriesData() {
-  try {
-      const response = await fetch('http://localhost:4000/african-countries-data'); // Corrected endpoint
-      if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
-  } catch (error) {
-      console.error('Failed to fetch African countries data:', error);
-      throw error; 
-  }
+    try {
+        const response = await fetch('http://localhost:4000/african-countries-data');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const countries = await response.json();
+        return countries; // This should be an array of country names
+    } catch (error) {
+        console.error('Failed to fetch African countries data:', error);
+        return []; // Return an empty array on error to avoid further issues
+    }
 }
 
-// Constants
-const margin = { top: 50, right: 50, bottom: 50, left: 50 },
-    width = 1000,
-    height = 700;
+async function fetchCountryData(countryName) {
+    try {
+        const response = await fetch(`http://localhost:4000/country-data/${countryName}`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        const formattedData = formatDataForChart(data, countryName);
+        drawChart([formattedData]); // Pass formatted data to the chart drawing function
+    } catch (error) {
+        console.error('Failed to fetch country data:', error);
+    }
+}
 
-// SVG setup for the map
+function formatDataForChart(data, countryName) {
+    return {
+        GeoAreaName: countryName,
+        data: Object.keys(data).filter(key => !isNaN(key)).map(year => ({
+            year: parseInt(year, 10),
+            value: parseFloat(data[year])
+        })).sort((a, b) => a.year - b.year)
+    };
+}
+
+const margin = { top: 10, right: 10, bottom: 10, left: 10 },
+      width = 700 - margin.left - margin.right,
+      height = 700 - margin.top - margin.bottom;
+
 const svgMap = d3.select("#map-container")
     .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", `translate(${margin.left},${margin.top})`);
+    .attr("width", width)
+    .attr("height", height)
+    .attr("transform", "translate(0)");
 
-// Tooltip setup
 const tooltipMap = d3.select("body")
     .append("div")
     .attr("class", "tooltip")
@@ -43,19 +64,12 @@ const tooltipMap = d3.select("body")
     .style("border-radius", "4px")
     .style("display", "none");
 
-// Store selected countries
-const selectedCountries = new Set();
-
 async function renderMap() {
-  try {
-    // Load African countries data
     const africanCountries = await getAfricanCountriesData();
-    
-    // Load world map data
     const geoData = await loadJSON("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson");
-    
-    const africaGeoData = geoData.features.filter(d => africanCountries.includes(d.properties.name));
 
+    const africaGeoData = geoData.features.filter(d => africanCountries.includes(d.properties.name));
+    
     const projection = d3.geoMercator().scale(400).translate([width / 2, height / 1.5]);
     const path = d3.geoPath().projection(projection);
 
@@ -75,23 +89,12 @@ async function renderMap() {
                 .style("top", (event.pageY + 10) + "px");
         })
         .on("mouseout", function (event, d) {
-            if (!selectedCountries.has(d.properties.name)) {
-                d3.select(this).attr("fill", "#cce5ff");
-            }
+            d3.select(this).attr("fill", "#cce5ff");
             tooltipMap.style("display", "none");
         })
-        .on("click", function (event, d) {
-            const selectedCountry = d.properties.name;
-            if (selectedCountries.has(selectedCountry)) {
-                selectedCountries.delete(selectedCountry);
-            } else {
-                selectedCountries.add(selectedCountry);
-            }
-            d3.select(this).attr("fill", selectedCountries.has(selectedCountry) ? "#6699ff" : "#cce5ff");
+        .on("click", async function (event, d) {
+            fetchCountryData(d.properties.name); // Fetch data when country is clicked
         });
-  } catch (error) {
-    console.error('Error rendering the map:', error);
-  }
 }
 
 renderMap();

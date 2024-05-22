@@ -99,6 +99,21 @@ const getAfricanCountriesData = async (req, res) => {
   }
 };
 
+const getCountryData = async (req, res) => {
+  const { countryName } = req.params;
+  try {
+      const query = 'SELECT * FROM "AdgangTilStrom" WHERE "GeoAreaName" = $1';
+      const results = await pool.query(query, [countryName]);
+      if (results.rows.length) {
+          res.status(200).json(results.rows[0]);
+      } else {
+          res.status(404).json({ message: 'No data found for this country.' });
+      }
+  } catch (error) {
+      console.error('Database query error:', error.message);
+      res.status(500).json({ message: 'Failed to retrieve country data.', error: error.message });
+  }
+};
 
 
 module.exports = {
@@ -106,6 +121,7 @@ module.exports = {
   ElectricityAccessData,
   CleanEnergyShare,
   getAfricanCountriesData,
+  getCountryData, 
 };
 
 
