@@ -79,9 +79,20 @@ const ElectricityAccessData = async (req, res) => {
 
 const CleanEnergyShare = async (req, res) => {
   try {
-      const query = 'SELECT * FROM "CleanEnergyShare"';  // SQL query with case-sensitive table name
-      const results = await pool.query(query);  // Execute the query
-      res.status(200).json(results.rows);  // Send the rows back to the client
+      const query = 'SELECT * FROM "CleanEnergyShare"';  
+      const results = await pool.query(query);  
+      res.status(200).json(results.rows); 
+  } catch (error) {
+      console.error('Database query error:', error.message);
+      res.status(500).json({ message: 'Failed to retrieve data.', error: error.message });
+  }
+};
+
+const getAfricanCountriesData = async (req, res) => {
+  try {
+      const query = 'SELECT country_name FROM standardized_countries';
+      const results = await pool.query(query);
+      res.status(200).json(results.rows.map(row => row.country_name));
   } catch (error) {
       console.error('Database query error:', error.message);
       res.status(500).json({ message: 'Failed to retrieve data.', error: error.message });
@@ -90,11 +101,11 @@ const CleanEnergyShare = async (req, res) => {
 
 
 
-
 module.exports = {
   populateDataFromCSV,
   ElectricityAccessData,
   CleanEnergyShare,
+  getAfricanCountriesData,
 };
 
 
