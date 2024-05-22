@@ -5,7 +5,11 @@ document.getElementById("startButton").addEventListener("click", function() {
     var quoteTwo = document.getElementById("quoteTwo");
     var quoteThree = document.getElementById("quoteThree");
     var globe = document.getElementById("globe");
+    var globeContainer = document.getElementById("globeContainer");
+    var globeContainerLeft = document.getElementById("globeContainerLeft");
+    var globeLeft = document.getElementById("globeLeft");  
     var quoteRef = document.getElementById("quoteRef");
+    var globeLegend = document.querySelector(".globeLegend");
 
     // Fade out the current quote and the start button
     quoteOne.classList.add("fade");
@@ -46,13 +50,23 @@ document.getElementById("startButton").addEventListener("click", function() {
                 setTimeout(function() {
                     quoteThree.classList.remove("fade-in");
 
-                    // Fade out globe over 6 seconds
+                    // Globe fader - fade in and left-fade
                     globe.classList.add("fade");
                     setTimeout(function() {
                         globe.style.display = "none";
-                    }, 7000); // 7 seconds - globe Fadeout
-                }, 6500); // 6.5 seconds - quoteThree Fadeout
-            }, 3000); // 3 seconds to allow fade out of quoteTwo
-        }, 4000); // 4 seconds - quoteTwo Fadeout
-    }, 1500); // 1.5 second delay between fades. 
+                        // Switch from globeContainer to globeContainerLeft
+                        globeContainer.style.display = "none";
+                        globeContainerLeft.style.display = "block";
+                        // Fade in globe from the left side after it fades out
+                        globeLeft.classList.add("fade-in-left");
+                        globeLeft.style.display = "block";
+                            setTimeout(function() {
+                                globeLegend.classList.add('fade-in');
+                            }, 1500); // 1.5 seconds delay
+                    }, 2000); // 2 seconds - globe Fadeout
+                }, 8000); // 8 seconds - quoteThree Fadeout
+            }, 4000); // 4 second to allow fade out of quoteTwo
+        }, 5000); // 5 second - quoteTwo Fadeout
+    }, 1200); // 1.2 second delay between Fades. 
 });
+

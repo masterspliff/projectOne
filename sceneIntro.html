@@ -17,9 +17,14 @@
 
 </br>
 
-    <div class="globeContainer">
+
+    <div class="globeContainer" id="globeContainer">
         <div id="globe" style="display:none;"></div>
     </div> 
+
+    <div class="globeContainerLeft" id="globeContainerLeft">
+        <div id="globeLeft" style="display:none;"></div>
+    </div>
 
     <div class="buttonContainer">
         <div id="startButton">
@@ -32,6 +37,28 @@
     <div class="quoteContainer">
         <p id="quoteRef">reference: IEA (2023), SDG7: Data and Projections, IEA, Paris https://www.iea.org/reports/sdg7-data-and-projections</p>
     </div>
+
+<div class="globeLegend">
+    <div id="farve1" class="legendBox">
+        <div class="box"></div>
+        <p>95% or more access to electricity</p>
+    </div>
+    <div id="farve2" class="legendBox">
+        <div class="box"></div>
+        <p>50% or more access to electricity</p>
+    </div>
+    <div id="farve3" class="legendBox">
+        <div class="box"></div>
+        <p>Lower than 50% access to electricity</p>
+    </div>
+    <div id="farve4" class="legendBox">
+        <div class="box"></div>
+        <p>No data</p>
+    </div>
+</div>
+
+
+
 
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://unpkg.com/topojson@3"></script>
