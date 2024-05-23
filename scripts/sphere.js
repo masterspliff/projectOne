@@ -40,21 +40,21 @@ export default async function createGlobe() {
   
     const path = d3.geoPath().projection(projection);
   
-    // Create SVG
-    const svg = d3.select("#globe")
-        .append("svg")
-        .attr("width", width)
-        .attr("height", height)
-        .call(d3.drag()
-            .subject(() => {
-                const r = projection.rotate();
-                return { x: r[0] / sensitivity, y: -r[1] / sensitivity };
-            })
-            .on("drag", (event) => {
-                const rotate = projection.rotate();
-                projection.rotate([event.x * sensitivity, -event.y * sensitivity, rotate[2]]);
-                svg.selectAll("path").attr("d", path);
-            }));
+// Create SVG
+const svg = d3.selectAll("#globe, #globeLeft")
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .call(d3.drag()
+        .subject(() => {
+            const r = projection.rotate();
+            return { x: r[0] / sensitivity, y: -r[1] / sensitivity };
+        })
+        .on("drag", (event) => {
+            const rotate = projection.rotate();
+            projection.rotate([event.x * sensitivity, -event.y * sensitivity, rotate[2]]);
+            svg.selectAll("path").attr("d", path);
+        }));
   
     // Sensitivity for dragging
     const sensitivity = 0.10;

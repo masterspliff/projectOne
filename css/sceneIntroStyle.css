@@ -1,10 +1,13 @@
-/* Quote and play-button CSS  */
-
+/* Play-button CSS  */
 .buttonContainer {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 50vh; /* Adjust as needed */
+}
+
+#startButton {
+    transition: opacity 1s ease;
 }
 
 #startButton {
@@ -28,25 +31,118 @@
     margin: 23px 20px 23px auto; 
 }
 
-.quote {
-    display: block;
-    text-align: center; 
-    font-size: 45px; 
-    font-family: Helvetica;
-    font-style: italic; 
+/* Quote CSS */
+.quoteContainer {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 10vh;
+    font-family: helvetica;
+    font-size: 35px; 
+    font-style: bold;
 }
 
-.quote p {
-    transition: opacity 1s ease; 
+#quoteThree {
+    font-size: 20px;
+    text-align: center; 
+    max-width: 55%;
 }
 
 #quoteRef {
-    margin-top: 220px;
+    margin-top: 500px;
     font-size: 15px; 
     font-family: Helvetica;
     font-style: italic;
+    transition: opacity 2s ease;
 }
 
-#startButton {
-    transition: opacity 1s ease;
+/* globeLegend CSS and colour-box */
+.globeLegend {
+    position: absolute;  /* Use position: absolute to position the element absolutely */
+    right: 0;            /* Align the element to the right side */
+    top: 50%;            /* Position the element vertically */
+    transform: translateY(-50%); /* Center the element vertically */
+    width: 45%;
+    font-family: Helvetica, sans-serif;  /* Added a fallback font */
+    font-size: 27px; 
+    opacity: 0; 
 }
+
+/* Box placement */
+.legendBox {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.legendBox .box {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+#farve1 .box {
+    background-color: #00FF00;
+}
+
+#farve2 .box {
+    background-color: #FFD700;
+}
+
+#farve3 .box {
+    background-color: #FF4500;
+}
+
+#farve4 .box {
+    background-color: grey;
+}
+
+
+/* fade in CSS */
+.fade, .fade-in {
+    transition: opacity 2s ease-in-out;
+}
+
+.fade {
+    opacity: 0;
+}
+
+.fade-in {
+    opacity: 1;
+}
+
+/* Globe controlers CSS */
+/* Fade-in from left class - Globe fade-in in intro */
+@keyframes fadeInLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.fade-in-left {
+    animation: fadeInLeft 2s ease-in-out;
+    opacity: 1;
+}
+
+/* Initial globe position */
+.globeContainer {
+    position: absolute; /* Ensure the container is positioned */
+    left: 0%; /* Align to the left side /adjust as needed) */
+    top: 15%; /* Center vertically (adjust as needed) */
+}
+
+/* Becomes active after the 2nd fade (leftfade-in) */
+/* Ensure the globe stays on the left after the 2nd fade (leftfade-in) */
+.globeContainerLeft {
+    position: absolute; /* Ensure the container is positioned */
+    left: -22%; /* Align to the left side /adjust as needed) */
+    top: 6%; /* Center vertically (adjust as needed) */
+}
+
