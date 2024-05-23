@@ -9,15 +9,36 @@
 </head>
 <body>
 
-
+    
         <div id="mapContainer"></div>
+
         <div id="chartContainer"></div>
 
+<!-- Updated Button Setup with Data Attributes -->
+        <div id="buttonContainer">
+            <button data-dataset="electricity-access-data">Electricity Access Data</button>
+            <button data-dataset="clean-energy-share">Clean Energy Share</button>
+        </div>
 
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://unpkg.com/topojson@3"></script>
     <script src="./scripts/africaMap.js"></script>
     <script src="./scripts/drawChart.js"></script>
+
+
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const buttonContainer = document.getElementById('buttonContainer');
+    buttonContainer.addEventListener('click', function(event) {
+        const target = event.target;
+        if (target.tagName === 'BUTTON' && target.dataset.dataset) {
+            updateData(target.dataset.dataset);
+        }
+    });
+});
+
+
+    </script>
     
 </body>
 </html>

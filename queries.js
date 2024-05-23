@@ -67,9 +67,10 @@ const populateDataFromCSV = async (filePath, tableName) => {
 
 
 const ElectricityAccessData = async (req, res) => {
+  const { countryName } = req.params;
   try {
-      const query = 'SELECT * FROM "AdgangTilStrom"';  // SQL query with case-sensitive table name
-      const results = await pool.query(query);  // Execute the query
+      const query = 'SELECT * FROM "AdgangTilStrom" WHERE "GeoAreaName" = $1';  // SQL query with case-sensitive table name
+      const results = await pool.query(query, [countryName]);  // Execute the query
       res.status(200).json(results.rows);  // Send the rows back to the client
   } catch (error) {
       console.error('Database query error:', error.message);
@@ -78,9 +79,11 @@ const ElectricityAccessData = async (req, res) => {
 };
 
 const CleanEnergyShare = async (req, res) => {
+  const { countryName } = req.params;
+
   try {
-      const query = 'SELECT * FROM "CleanEnergyShare"';  
-      const results = await pool.query(query);  
+      const query = 'SELECT * FROM "CleanEnergyShare" WHERE "GeoAreaName" = $1';  
+      const results = await pool.query(query, [countryName]);  
       res.status(200).json(results.rows); 
   } catch (error) {
       console.error('Database query error:', error.message);
