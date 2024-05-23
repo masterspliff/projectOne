@@ -34,6 +34,7 @@ async function fetchCountryData(countryName) {
     }
 }
 
+// Formatting data from selected country to the chart
 function formatDataForChart(data, countryName) {
     return {
         GeoAreaName: countryName,
