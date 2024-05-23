@@ -1,6 +1,10 @@
 const express = require('express');
 const { json } = require('body-parser');
-const { populateDataFromCSV, ElectricityAccessData, CleanEnergyShare } = require('./queries');
+const { populateDataFromCSV,
+        ElectricityAccessData,
+        CleanEnergyShare,
+        getAfricanCountriesData,
+        getCountryData } = require('./queries');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -30,7 +34,8 @@ app.post('/upload-csv', async (req, res) => {
 
 app.get("/electricity-access-data", ElectricityAccessData);
 app.get("/clean-energy-share", CleanEnergyShare);
-
+app.get("/african-countries-data", getAfricanCountriesData);
+app.get('/country-data/:countryName', getCountryData);
 
 
 app.listen(PORT, () => {
