@@ -66,11 +66,16 @@ const tooltipMap = d3.select("body")
     .style("display", "none");
 
 async function renderMap() {
-    const africanCountries = await getAfricanCountriesData();
-    const geoData = await loadJSON("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson");
 
-    const africaGeoData = geoData.features.filter(d => africanCountries.includes(d.properties.name));
+    const africanCountries = await getAfricanCountriesData(); // creating new variable and storing the data from the db. await till its loaded
+    console.log(africanCountries); // checks if the countries is loaded correctly.
+
+
+    const geoData = await loadJSON("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson"); // world map json with svg propertiers etc. 
+    const africaGeoData = geoData.features.filter(d => africanCountries.includes(d.properties.name)); // filter out all uneccesarry countires unrelated to africa. 
     
+    // setting up the map projection and geographic paths
+    //
     const projection = d3.geoMercator().scale(400).translate([width / 2, height / 1.5]);
     const path = d3.geoPath().projection(projection);
 
@@ -82,11 +87,12 @@ async function renderMap() {
         .attr("fill", "#cce5ff")
         .attr("stroke", "black")
         .attr("stroke-width", 0.5)
+        // Added color when hovering over a country.
         .on("mouseover", function (event, d) {
             d3.select(this).attr("fill", "#6699ff");
-            tooltipMap.style("display", "block")
+            tooltipMap.style("display", "block") // displaying the country name when hovering
                 .html(d.properties.name)
-                .style("left", (event.pageX + 10) + "px")
+                .style("left", (event.pageX + 10) + "px") // position of the box/tooltip
                 .style("top", (event.pageY + 10) + "px");
         })
         .on("mouseout", function (event, d) {
