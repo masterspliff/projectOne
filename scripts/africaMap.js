@@ -49,7 +49,7 @@ const margin = { top: 10, right: 10, bottom: 10, left: 10 }, // defining standar
       width = 700 - margin.left - margin.right, 
       height = 700 - margin.top - margin.bottom;
 
-const svgMap = d3.select("#map-container") // using map-container to contain the map
+const svgMap = d3.select("#mapContainer") // using map-container to contain the map
     .append("svg")
     .attr("width", width)
     .attr("height", height)

@@ -5,7 +5,7 @@ function initializeChart() {
           width = 960 - margin.left - margin.right,
           height = 500 - margin.top - margin.bottom;
 
-    svgChart = d3.select("body").append("svg")
+    svgChart = d3.select("#chartContainer").append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
