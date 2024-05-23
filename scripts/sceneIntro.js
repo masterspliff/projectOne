@@ -1,4 +1,4 @@
-document.getElementById("startButton").addEventListener("click", function() {
+let introSekvens = document.getElementById("startButton").addEventListener("click", function() {
     // Get elements
     var quoteOne = document.getElementById("quoteOne");
     var startButton = document.getElementById("startButton");
@@ -10,7 +10,7 @@ document.getElementById("startButton").addEventListener("click", function() {
     var globeLeft = document.getElementById("globeLeft");  
     var quoteRef = document.getElementById("quoteRef");
     var globeLegend = document.querySelector(".globeLegend");
-
+    var continueButton = document.querySelector(".continueButton");
     // Fade out the current quote and the start button
     quoteOne.classList.add("fade");
     startButton.classList.add("fade");
@@ -61,12 +61,22 @@ document.getElementById("startButton").addEventListener("click", function() {
                         globeLeft.classList.add("fade-in-left");
                         globeLeft.style.display = "block";
                             setTimeout(function() {
+                                // globeLegend fade in after globeLeft
                                 globeLegend.classList.add('fade-in');
-                            }, 1500); // 1.5 seconds delay
+                                setTimeout(function() {
+                                    // Continue button fade in after globeLegend
+                                    continueButton.classList.add("fade-in");
+                                    continueButton.style.display = "block";
+                                    continueButton.style.opacity = 1;
+                                }, 4000); // 4 seconds delay / fade-in continueButton
+                            }, 1500); // 1.5 seconds delay globeLegend
                     }, 2000); // 2 seconds - globe Fadeout
                 }, 8000); // 8 seconds - quoteThree Fadeout
             }, 4000); // 4 second to allow fade out of quoteTwo
         }, 5000); // 5 second - quoteTwo Fadeout
     }, 1200); // 1.2 second delay between Fades. 
-});
+}); 
 
+document.getElementsByClassName("continueButton").addEventListener("click", function() { 
+    introSekvens
+});
