@@ -100,7 +100,8 @@
 }
 
 
-/* fade in CSS */
+/* fade in / fade CSS */
+/* "fade" represents a fade-out effect */
 .fade, .fade-in {
     transition: opacity 2s ease-in-out;
 }
