@@ -81,11 +81,11 @@ document.querySelector(".continueButton").addEventListener("click", function() {
     const visibleElements = document.querySelectorAll(".fade-in, .fade-in-left, .fade");
 
     // Add fade class to each visible element and set opacity to 0
-    visibleElements.forEach(element => element.classList.add(".fade"));
+    visibleElements.forEach(element => element.classList.add("fade"));
     visibleElements.forEach(element => element.style.opacity = 0);
 
     // Remove elements from the DOM after fade
     setTimeout(() => {
         visibleElements.forEach(element => element.style.display = "none");
-    }, 1000); // Fade duration
+    }, 1500); // Fade duration
 });
