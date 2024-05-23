@@ -45,17 +45,17 @@ function formatDataForChart(data, countryName) {
     };
 }
 
-const margin = { top: 10, right: 10, bottom: 10, left: 10 },
-      width = 700 - margin.left - margin.right,
+const margin = { top: 10, right: 10, bottom: 10, left: 10 }, // defining standard margins for later use
+      width = 700 - margin.left - margin.right, 
       height = 700 - margin.top - margin.bottom;
 
-const svgMap = d3.select("#map-container")
+const svgMap = d3.select("#map-container") // using map-container to contain the map
     .append("svg")
     .attr("width", width)
     .attr("height", height)
     .attr("transform", "translate(0)");
 
-const tooltipMap = d3.select("body")
+const tooltipMap = d3.select("body") // css styling for the tooltip
     .append("div")
     .attr("class", "tooltip")
     .style("position", "absolute")
@@ -75,9 +75,8 @@ async function renderMap() {
     const africaGeoData = geoData.features.filter(d => africanCountries.includes(d.properties.name)); // filter out all uneccesarry countires unrelated to africa. 
     
     // setting up the map projection and geographic paths
-    //
-    const projection = d3.geoMercator().scale(400).translate([width / 2, height / 1.5]);
-    const path = d3.geoPath().projection(projection);
+    const projection = d3.geoMercator().scale(400).translate([width / 2, height / 1.5]); // size of the map (africa) and method to moving the center of the map
+    const path = d3.geoPath().projection(projection); // setting up the svg data using geoprahic features. essentially using the mercator projecter, so d3 can use the path generator to draw the map. 
 
     svgMap.selectAll("path")
         .data(africaGeoData)
@@ -87,20 +86,20 @@ async function renderMap() {
         .attr("fill", "#cce5ff")
         .attr("stroke", "black")
         .attr("stroke-width", 0.5)
-        // Added color when hovering over a country.
-        .on("mouseover", function (event, d) {
-            d3.select(this).attr("fill", "#6699ff");
+
+        .on("mouseover", function (event, d) { // hover effects starts here
+            d3.select(this).attr("fill", "#6699ff");  // added color when hovering over a country.
             tooltipMap.style("display", "block") // displaying the country name when hovering
-                .html(d.properties.name)
+                .html(d.properties.name) // what text should be displaying in the tooltip (in this case the name of the country)
                 .style("left", (event.pageX + 10) + "px") // position of the box/tooltip
                 .style("top", (event.pageY + 10) + "px");
         })
-        .on("mouseout", function (event, d) {
-            d3.select(this).attr("fill", "#cce5ff");
-            tooltipMap.style("display", "none");
+        .on("mouseout", function (event, d) {  // when the cursor leaves and then "resetting" the hover effects. 
+            d3.select(this).attr("fill", "#cce5ff"); // resetting the color back to normal
+            tooltipMap.style("display", "none"); // removes the tooltip when not any longer hovered over the country
         })
-        .on("click", async function (event, d) {
-            fetchCountryData(d.properties.name); // Fetch data when country is clicked
+        .on("click", async function (event, d) { // click function
+            fetchCountryData(d.properties.name); // fetching the data from the selected country (name of the country -> which is being used to generate data from)
         });
 }
 
