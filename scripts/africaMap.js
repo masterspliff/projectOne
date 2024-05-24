@@ -50,6 +50,10 @@ async function updateData(dataset, countryName) {
     }
 }
 
+
+const akonCountries = ["Mali","Niger", "Senegal", "Guinea", "Burkina Faso", "Sierra Leone", "Benin"," Equatorial Guinea", "Gabon",
+        "Republic of Congo","Namibia","Madagascar","Kenya","Nigeria"];
+
 const margin = { top: 10, right: 10, bottom: 10, left: 10 }, // defining standard margins for later use
       width = 700 - margin.left - margin.right, 
       height = 700 - margin.top - margin.bottom;
@@ -70,11 +74,15 @@ const tooltipMap = d3.select("body") // css styling for the tooltip
 
 async function renderMap() {
     const africanCountries = await getAfricanCountriesData(); // creating new variable and storing the data from the db. await till its loaded
-    console.log(africanCountries); // checks if the countries is loaded correctly.
+    console.log('egen liste', africanCountries); // checks if the countries is loaded correctly.
 
     const geoData = await loadJSON("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson"); // world map json with svg propertiers etc. 
     const africaGeoData = geoData.features.filter(d => africanCountries.includes(d.properties.name)); // filter out all uneccesarry countires unrelated to africa. 
     
+    console.log('filteret liste', africaGeoData)
+    let missingCountries = africanCountries.filter(country => !africaGeoData.some(geoCountry => geoCountry.properties.name === country));
+
+    console.log('Missing countries:', missingCountries);
     // setting up the map projection and geographic paths
     const projection = d3.geoMercator().scale(400).translate([width / 2, height / 1.5]); // size of the map (africa) and method to moving the center of the map
     const path = d3.geoPath().projection(projection); // setting up the svg data using geoprahic features. essentially using the mercator projecter, so d3 can use the path generator to draw the map. 
@@ -84,7 +92,13 @@ async function renderMap() {
         .enter()
         .append("path")
         .attr("d", path)
-        .attr("fill", "#cce5ff")
+        .attr("fill", function(d) {
+            if (akonCountries.includes(d.properties.name)) {
+                return "blue"; // color for countries in akonCountries list
+            } else {
+                return "grey"; // color for other countries
+            }
+        })
         .attr("stroke", "black")
         .attr("stroke-width", 0.5)
         .on("mouseover", function (event, d) { // hover effects starts here
@@ -95,9 +109,11 @@ async function renderMap() {
                 .style("top", (event.pageY + 10) + "px");
         })
         .on("mouseout", function (event, d) {  // when the cursor leaves and then "resetting" the hover effects. 
-            d3.select(this).attr("fill", "#cce5ff"); // resetting the color back to normal
+            var originalColor = akonCountries.includes(d.properties.name) ? "blue" : "grey"; // Check if the country is in akonCountries
+            d3.select(this).attr("fill", originalColor); // resetting the color back to its original state based on condition
             tooltipMap.style("display", "none"); // removes the tooltip when not any longer hovered over the country
         })
+                
         .on("click", async function (event, d) { // click function
             const activeButton = document.querySelector('#buttonContainer .active');
             const dataset = activeButton ? activeButton.dataset.dataset : 'african-countries-data';
