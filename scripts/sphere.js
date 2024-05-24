@@ -8,7 +8,7 @@ async function loadJSON(url) {
   
 async function ElectricityAccessData() {
     try {
-        const response = await fetch('http://localhost:4000/electricity-access-data'); 
+        const response = await fetch('http://localhost:4000/get-sphere-data'); 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }

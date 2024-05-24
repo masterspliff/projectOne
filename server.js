@@ -4,7 +4,8 @@ const { populateDataFromCSV,
         ElectricityAccessData,
         CleanEnergyShare,
         getAfricanCountriesData,
-        getCountryData } = require('./queries');
+        getCountryData,
+        SphereData } = require('./queries');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -36,7 +37,7 @@ app.get('/electricity-access-data/:countryName', ElectricityAccessData);
 app.get('/clean-energy-share/:countryName', CleanEnergyShare);
 app.get("/african-countries-data", getAfricanCountriesData);
 app.get('/country-data/:countryName', getCountryData);
-
+app.get('/get-sphere-data', SphereData);
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);

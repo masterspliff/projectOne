@@ -66,6 +66,17 @@ const populateDataFromCSV = async (filePath, tableName) => {
 // *Remember to 'npm install' before starting
 
 
+const SphereData = async (req, res) => {
+  try {
+      const query = 'SELECT * FROM "AdgangTilStrom"';  // SQL query with case-sensitive table name
+      const results = await pool.query(query);  // Execute the query
+      res.status(200).json(results.rows);  // Send the rows back to the client
+  } catch (error) {
+      console.error('Database query error:', error.message);
+      res.status(500).json({ message: 'Failed to retrieve data.', error: error.message });
+  }
+};
+
 const ElectricityAccessData = async (req, res) => {
   const { countryName } = req.params;
   try {
@@ -125,6 +136,7 @@ module.exports = {
   CleanEnergyShare,
   getAfricanCountriesData,
   getCountryData, 
+  SphereData,
 };
 
 
