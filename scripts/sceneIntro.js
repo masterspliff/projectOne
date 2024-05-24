@@ -76,16 +76,41 @@ document.getElementById("startButton").addEventListener("click", function() {
 
 // Add event listener to the continue button to initiate the fade of the intro sequence
 document.querySelector(".continueButton").addEventListener("click", function() {
-
     // Get all visible elements with the fade-in, fade-in-left, and fade classes
     const visibleElements = document.querySelectorAll(".fade-in, .fade-in-left, .fade");
 
     // Add fade class to each visible element and set opacity to 0
-    visibleElements.forEach(element => element.classList.add("fade"));
-    visibleElements.forEach(element => element.style.opacity = 0);
+    visibleElements.forEach(element => {
+        element.classList.add("fade");
+        element.style.opacity = 0;
+    });
 
     // Remove elements from the DOM after fade
     setTimeout(() => {
-        visibleElements.forEach(element => element.style.display = "none");
-    }, 1500); // Fade duration
+        visibleElements.forEach(element => {
+            element.style.display = "none";
+        });
+
+        // Make the completeSite div visible
+        const completeSite = document.getElementById("completeSite");
+        completeSite.style.display = "block";
+        completeSite.style.opacity = 0;
+
+        // Fade in the completeSite div
+        setTimeout(() => {
+            completeSite.style.transition = "opacity 1.5s";
+            completeSite.style.opacity = 1;
+
+            // Show mapContainer
+            const mapContainer = document.getElementById("mapContainer");
+            mapContainer.style.display = "block";
+            mapContainer.style.opacity = 0;
+
+            // Fade in the mapContainer
+            setTimeout(() => {
+                mapContainer.style.transition = "opacity 1.5s";
+                mapContainer.style.opacity = 1;
+            }, 100); // Short delay to ensure the display property is applied before starting the fade-in effect
+        }, 100); // Short delay to ensure the display property is applied before starting the fade-in effect
+    }, 2000); // Extended to 2000ms to match the fade-out duration of 2s
 });

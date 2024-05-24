@@ -70,7 +70,8 @@ const tooltipMap = d3.select("body") // css styling for the tooltip
     .style("padding", "8px")
     .style("border", "1px solid #d9d9d9")
     .style("border-radius", "4px")
-    .style("display", "none");
+    .style("display", "none")
+    .style("z-index", "1001");
 
 async function renderMap() {
     const africanCountries = await getAfricanCountriesData(); // creating new variable and storing the data from the db. await till its loaded
