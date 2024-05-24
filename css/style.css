@@ -4,9 +4,6 @@ body {
     padding: 0;
     background-color: rgb(136, 179, 199);
     overflow: hidden;
-    display: flex; /* Using flexbox for equal sizing and alignment */
-    align-items: center; /* Centering vertically */
-    justify-content: center; /* Centering horizontally */
 }
 
 .axis {
