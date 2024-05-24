@@ -1,72 +1,91 @@
 document.getElementById("startButton").addEventListener("click", function() {
     // Get elements
-    var quoteOne = document.getElementById("quoteOne");
-    var startButton = document.getElementById("startButton");
-    var quoteTwo = document.getElementById("quoteTwo");
-    var quoteThree = document.getElementById("quoteThree");
-    var globe = document.getElementById("globe");
-    var globeContainer = document.getElementById("globeContainer");
-    var globeContainerLeft = document.getElementById("globeContainerLeft");
-    var globeLeft = document.getElementById("globeLeft");  
-    var quoteRef = document.getElementById("quoteRef");
-    var globeLegend = document.querySelector(".globeLegend");
+    const quoteOne = document.getElementById("quoteOne");
+    const startButton = document.getElementById("startButton");
+    const quoteTwo = document.getElementById("quoteTwo");
+    const quoteThree = document.getElementById("quoteThree");
+    const globe = document.getElementById("globe");
+    const globeContainer = document.getElementById("globeContainer");
+    const globeContainerLeft = document.getElementById("globeContainerLeft");
+    const globeLeft = document.getElementById("globeLeft");  
+    const quoteRef = document.getElementById("quoteRef");
+    const globeLegend = document.querySelector(".globeLegend");
+    const continueButton = document.querySelector(".continueButton");
 
     // Fade out the current quote and the start button
-    quoteOne.classList.add("fade");
-    startButton.classList.add("fade");
-    quoteRef.classList.add("fade");
-    
-    setTimeout(function() {
+    [quoteOne, startButton, quoteRef].forEach(element => element.classList.add("fade"));
+
+    setTimeout(() => {
         quoteOne.style.display = "none";
         quoteTwo.style.display = "block";
         quoteTwo.classList.add("fade");
-        
-        setTimeout(function() {
+
+        setTimeout(() => {
             quoteTwo.classList.add("fade-in");
         }, 10); // Small delay to ensure display change is applied
 
         // Import the JavaScript file after quoteTwo fades in
         import('./sphere.js').then(module => {
-            // Once imported, execute the function
             module.default(); // Call the default export function
-            // Show the sphere
-            globe.style.display = "block";
+            globe.style.display = "block"; // Show the globe
         });
 
         // Fade out quoteTwo after 3 seconds, then fade in quoteThree
-        setTimeout(function() {
+        setTimeout(() => {
             quoteTwo.classList.remove("fade-in");
-            
-            setTimeout(function() {
+
+            setTimeout(() => {
                 quoteTwo.style.display = "none";
                 quoteThree.style.display = "block";
                 quoteThree.classList.add("fade");
-                
-                setTimeout(function() {
+
+                setTimeout(() => {
                     quoteThree.classList.add("fade-in");
                 }, 10); // Small delay to ensure display change is applied
 
                 // Fade out quoteThree after X seconds
-                setTimeout(function() {
+                setTimeout(() => {
                     quoteThree.classList.remove("fade-in");
 
                     // Globe fader - fade in and left-fade
                     globe.classList.add("fade");
-                    setTimeout(function() {
+                    setTimeout(() => {
                         globe.style.display = "none";
-                        // Switch from globeContainer to globeContainerLeft
                         globeContainer.style.display = "none";
                         globeContainerLeft.style.display = "block";
-                        // Fade in globe from the left side after it fades out
                         globeLeft.classList.add("fade-in-left");
                         globeLeft.style.display = "block";
-                            setTimeout(function() {
-                                globeLegend.classList.add('fade-in');
-                            }, 1500); // 1.5 seconds delay
-                    }, 2000); // 2 seconds - globe Fadeout
-                }, 8000); // 8 seconds - quoteThree Fadeout
-            }, 4000); // 4 second to allow fade out of quoteTwo
-        }, 5000); // 5 second - quoteTwo Fadeout
-    }, 1200); // 1.2 second delay between Fades. 
+
+                        setTimeout(() => {
+                            // globeLegend fade in after globeLeft
+                            globeLegend.classList.add('fade-in');
+
+                            setTimeout(() => {
+                                // Continue button fade in after globeLegend
+                                continueButton.classList.add("fade-in");
+                                continueButton.style.display = "block";
+                                continueButton.style.opacity = 1;
+                            }, 4000); // 4 seconds delay for continueButton fade-in
+                        }, 1500); // 1.5 seconds delay for globeLegend fade-in
+                    }, 2000); // 2 seconds delay for globe fade
+                }, 8000); // 8 seconds delay for quoteThree fade
+            }, 4000); // 4 seconds delay for quoteTwo fade
+        }, 5000); // 5 seconds delay for quoteTwo fade-in
+    }, 1200); // 1.2 seconds delay between initial fades
 });
 
+// Add event listener to the continue button to initiate the fade of the intro sequence
+document.querySelector(".continueButton").addEventListener("click", function() {
+
+    // Get all visible elements with the fade-in, fade-in-left, and fade classes
+    const visibleElements = document.querySelectorAll(".fade-in, .fade-in-left, .fade");
+
+    // Add fade class to each visible element and set opacity to 0
+    visibleElements.forEach(element => element.classList.add("fade"));
+    visibleElements.forEach(element => element.style.opacity = 0);
+
+    // Remove elements from the DOM after fade
+    setTimeout(() => {
+        visibleElements.forEach(element => element.style.display = "none");
+    }, 1500); // Fade duration
+});

@@ -65,7 +65,7 @@
     top: 50%;            /* Position the element vertically */
     transform: translateY(-50%); /* Center the element vertically */
     width: 45%;
-    font-family: Helvetica, sans-serif;  /* Added a fallback font */
+    font-family: Helvetica;  
     font-size: 27px; 
     opacity: 0; 
 }
@@ -100,7 +100,8 @@
 }
 
 
-/* fade in CSS */
+/* fade in / fade CSS */
+/* "fade" represents a fade-out effect */
 .fade, .fade-in {
     transition: opacity 2s ease-in-out;
 }
@@ -113,7 +114,7 @@
     opacity: 1;
 }
 
-/* Globe controlers CSS */
+/* Globe controler CSS */
 /* Fade-in from left class - Globe fade-in in intro */
 @keyframes fadeInLeft {
     0% {
@@ -144,5 +145,34 @@
     position: absolute; /* Ensure the container is positioned */
     left: -22%; /* Align to the left side /adjust as needed) */
     top: 6%; /* Center vertically (adjust as needed) */
+}
+
+/* Continue button CSS */
+.continueButton {
+    position: sticky;
+    right: -90%; 
+    bottom: -100%; 
+    background-color: #2f80ed;
+    border-radius: 10px;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Helvetica;
+    font-size: 20px;
+    font-weight: 750;
+    height: 50px;
+    letter-spacing: normal;
+    line-height: 1.2;
+    padding: 14px 30px;
+    position: relative;
+    text-align: center;
+    transition: all .5s;
+    opacity: 0;
+  }
+
+.continueButton:hover {
+  background-color: #065dd8;
+  transform: translateY(-2px);
 }
 
