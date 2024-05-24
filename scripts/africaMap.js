@@ -20,41 +20,44 @@ async function getAfricanCountriesData() {
     }
 }
 
-async function fetchCountryData(countryName) {
+async function updateData(dataset, countryName) {
     try {
-        const response = await fetch(`http://localhost:4000/country-data/${countryName}`);
+        const url = `http://localhost:4000/${dataset}/${countryName}`;  // Sørg for at landets navn er korrekt kodet, hvis det indeholder specialtegn eller mellemrum
+        const response = await fetch(url);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        const formattedData = formatDataForChart(data, countryName);
-        drawChart([formattedData]); // Pass formatted data to the chart drawing function
-    } catch (error) {
-        console.error('Failed to fetch country data:', error);
-    }
-}
+        console.log("Fetched data:", data); // Log data lige efter det er modtaget
 
-// Formatting data from selected country to the chart
-function formatDataForChart(data, countryName) {
-    return {
-        GeoAreaName: countryName,
-        data: Object.keys(data).filter(key => !isNaN(key)).map(year => ({
-            year: parseInt(year, 10),
-            value: parseFloat(data[year])
-        })).sort((a, b) => a.year - b.year)
-    };
+        // Format data for ALLAREA, RURAL, and URBAN
+        const categories = ['ALLAREA', 'RURAL', 'URBAN'];
+        const formattedData = categories.map(category => ({
+            GeoAreaName: countryName,
+            category: category,
+            data: data.filter(item => item.Location === category).map(item => 
+                Object.keys(item).filter(key => !isNaN(key) && key.length === 4).map(year => ({
+                    year: parseInt(year, 10),
+                    value: parseFloat(item[year])
+                })).sort((a, b) => a.year - b.year)
+            ).flat()  // Flatten the array if necessary
+        }));
+        
+        console.log("Formatted data for chart:", formattedData); // Log efter data er formateret
+        drawChart(formattedData);
+    } catch (error) {
+        console.error('Failed to update data:', error);
+    }
 }
 
 const margin = { top: 10, right: 10, bottom: 10, left: 10 }, // defining standard margins for later use
       width = 700 - margin.left - margin.right, 
       height = 700 - margin.top - margin.bottom;
 
-const svgMap = d3.select("#map-container") // using map-container to contain the map
-    .append("svg")
-    .attr("width", width)
-    .attr("height", height)
-    .attr("transform", "translate(0)");
-
+const svgMap = d3.select("#mapContainer")
+      .append("svg")
+      .attr("transform", "translate(0)");
+  
 const tooltipMap = d3.select("body") // css styling for the tooltip
     .append("div")
     .attr("class", "tooltip")
@@ -66,10 +69,8 @@ const tooltipMap = d3.select("body") // css styling for the tooltip
     .style("display", "none");
 
 async function renderMap() {
-
     const africanCountries = await getAfricanCountriesData(); // creating new variable and storing the data from the db. await till its loaded
     console.log(africanCountries); // checks if the countries is loaded correctly.
-
 
     const geoData = await loadJSON("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson"); // world map json with svg propertiers etc. 
     const africaGeoData = geoData.features.filter(d => africanCountries.includes(d.properties.name)); // filter out all uneccesarry countires unrelated to africa. 
@@ -86,7 +87,6 @@ async function renderMap() {
         .attr("fill", "#cce5ff")
         .attr("stroke", "black")
         .attr("stroke-width", 0.5)
-
         .on("mouseover", function (event, d) { // hover effects starts here
             d3.select(this).attr("fill", "#6699ff");  // added color when hovering over a country.
             tooltipMap.style("display", "block") // displaying the country name when hovering
@@ -99,8 +99,30 @@ async function renderMap() {
             tooltipMap.style("display", "none"); // removes the tooltip when not any longer hovered over the country
         })
         .on("click", async function (event, d) { // click function
-            fetchCountryData(d.properties.name); // fetching the data from the selected country (name of the country -> which is being used to generate data from)
+            const activeButton = document.querySelector('#buttonContainer .active');
+            const dataset = activeButton ? activeButton.dataset.dataset : 'african-countries-data';
+            updateData(dataset, d.properties.name); // fetching the data from the selected country and dataset
         });
 }
 
 renderMap();
+
+document.addEventListener('DOMContentLoaded', function() {
+    const buttonContainer = document.getElementById('buttonContainer');
+    buttonContainer.addEventListener('click', function(event) {
+        const target = event.target;
+        if (target.tagName === 'BUTTON' && target.dataset.dataset) {
+            // Remove active class from all buttons
+            document.querySelectorAll('#buttonContainer button').forEach(btn => btn.classList.remove('active'));
+            // Add active class to the clicked button
+            target.classList.add('active');
+
+            // Get selected country name from map selection, if any
+            const selectedCountry = document.querySelector('path.selected');
+            if (selectedCountry) {
+                const countryName = selectedCountry.datum().properties.name;
+                updateData(target.dataset.dataset, countryName);
+            }
+        }
+    });
+});

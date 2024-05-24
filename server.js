@@ -32,8 +32,8 @@ app.post('/upload-csv', async (req, res) => {
     }
 });
 
-app.get("/electricity-access-data", ElectricityAccessData);
-app.get("/clean-energy-share", CleanEnergyShare);
+app.get('/electricity-access-data/:countryName', ElectricityAccessData);
+app.get('/clean-energy-share/:countryName', CleanEnergyShare);
 app.get("/african-countries-data", getAfricanCountriesData);
 app.get('/country-data/:countryName', getCountryData);
 
