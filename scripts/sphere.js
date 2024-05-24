@@ -77,13 +77,15 @@ const svg = d3.selectAll("#globe, #globeLeft")
   
     // Access levels and corresponding colors
     const accessLevels = {
-        "full": "#00FF00", // Green
+        "full": "#90D26D", // Green
+        "upperMedium": "#FFA500", // Orange
         "medium": "#FFD700", // Yellow
         "none": "#FF4500" // OrangeRed
     };
   
     function getAccessColor(value) {
         if (value >= 95) return accessLevels["full"];
+        else if (value >= 70) return accessLevels["upperMedium"];
         else if (value >= 50) return accessLevels["medium"];
         else return accessLevels["none"];
     }
@@ -123,7 +125,7 @@ const svg = d3.selectAll("#globe, #globeLeft")
               if (accessValue !== undefined) {
                   return getAccessColor(accessValue);
               } else {
-                  return "#1E90FF"; // Default color (Blue)
+                  return "#808080"; // Default color (Blue)
               }
           })
           .style("opacity", 0) // Set initial opacity to 0
