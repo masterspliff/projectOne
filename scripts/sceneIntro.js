@@ -65,13 +65,13 @@ document.getElementById("startButton").addEventListener("click", function() {
                                 continueButton.classList.add("fade-in");
                                 continueButton.style.display = "block";
                                 continueButton.style.opacity = 1;
-                            }, 0); // 4 seconds delay for continueButton fade-in
-                        }, 0); // 1.5 seconds delay for globeLegend fade-in
-                    }, 0); // 2 seconds delay for globe fade
-                }, 0); // 8 seconds delay for quoteThree fade
-            }, 0); // 4 seconds delay for quoteTwo fade
-        }, 0); // 5 seconds delay for quoteTwo fade-in
-    }, 0); // 1.2 seconds delay between initial fades
+                            }, 4000); // 4 seconds delay for continueButton fade-in
+                        }, 1500); // 1.5 seconds delay for globeLegend fade-in
+                    }, 2000); // 2 seconds delay for globe fade
+                }, 8000); // 8 seconds delay for quoteThree fade
+            }, 4000); // 4 seconds delay for quoteTwo fade
+        }, 5000); // 5 seconds delay for quoteTwo fade-in
+    }, 1200); // 1.2 seconds delay between initial fades
 });
 
 // Add event listener to the continue button to initiate the fade of the intro sequence

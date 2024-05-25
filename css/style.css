@@ -44,24 +44,39 @@ body {
     stroke-width: 0.3px;
 }
 
-
-
+#mapContainer {
+    position: absolute;
+    left: 0;
+    top: 6%; 
+    z-index: 0;
+    display: none; 
+    opacity: 0; 
+    width: 50%;
+    height: 100%;
+}
 
 #chartContainer {
-    width: 100%;
+    width: 50%;
     height: 100%;
-    z-index: 1002;
+    position: absolute;
+    top: 20%; 
+    right: -5%;
 }
 
-svg {
+
+#mapContainer, svg {
     width: 100%; /* Full container width */
     height: 100%; /* Full container height */
+
 }
+
+
 
 #buttonContainer {
     position: absolute;
-    right: 200px;
+    right: 500px;
     bottom: 100px;
+
 }
 
 /* SECTION ONE */
@@ -74,8 +89,9 @@ svg {
 
 /* SECTION TWO */
 
+
+
 #sectionTwoBody {
-    margin: 0;
     background: #b3daeb77;
     display: flex;
     flex-direction: column;
@@ -122,45 +138,4 @@ svg {
     border: 0px;
     border-radius: 8px;
     pointer-events: none;
-}
-
-
-.chart-svg {
-    font-family: Arial, sans-serif;
-}
-
-.chart-group {
-    fill: none;
-    stroke: #000;
-}
-
-.line {
-    fill: none;
-    stroke-width: 2px;
-}
-
-.data-point {
-    fill: #666;
-    stroke: #fff;
-    stroke-width: 1.5px;
-}
-
-.tooltip {
-    position: absolute;
-    display: none;
-    padding: 10px;
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    pointer-events: none;
-}
-
-.x-axis path,
-.y-axis path {
-    stroke: black;
-}
-
-.x-axis line,
-.y-axis line {
-    stroke: grey;
 }
