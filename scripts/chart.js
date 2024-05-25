@@ -15,34 +15,33 @@ const data = [
     { country: "Nigeria", values: [84.7, 89.0], color: "rgba(255, 192, 203, 0.4)" }
 ];
 
-// Sort data by the lowest value in 2022
 data.sort((a, b) => d3.ascending(a.values[1], b.values[1]));
 
-const margin = { top: 30, right: 30, bottom: 70, left: 150 };
-const width = 800 - margin.left - margin.right;
-const height = 500 - margin.top - margin.bottom;
+const marginTwo = { top: 30, right: 30, bottom: 70, left: 150 };
+const widthTwo = 800 - marginTwo.left - marginTwo.right;
+const heightTwo = 500 - marginTwo.top - marginTwo.bottom;
 
 const svg = d3.select("#barchart")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
+    .attr("width", widthTwo + marginTwo.left + marginTwo.right)
+    .attr("height", heightTwo + marginTwo.top + marginTwo.bottom)
     .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    .attr("transform", "translate(" + marginTwo.left + "," + marginTwo.top + ")");
 
-const x = d3.scaleLinear()
+const xScaleTwo = d3.scaleLinear()
     .domain([0, d3.max(data, d => d3.max(d.values))])
-    .range([0, width]);
+    .range([0, widthTwo]);
 
-const y = d3.scaleBand()
+const yScaleTwo = d3.scaleBand()
     .domain(data.map(d => d.country))
-    .range([0, height])
+    .range([0, heightTwo])
     .padding(0.1);
 
-const color = d3.scaleOrdinal()
+const colorScaleTwo = d3.scaleOrdinal()
     .domain(data.map(d => d.country))
     .range(data.map(d => d.color));
 
 const tooltip = d3.select("body").append("div")
-    .attr("class", "tooltip")
+    .attr("class", "sectionTwoTooltip")
     .style("opacity", 0);
 
 data.forEach((d, i) => {
@@ -51,11 +50,11 @@ data.forEach((d, i) => {
         .enter().append("rect")
         .attr("class", "bar" + i)
         .attr("x", 0)
-        .attr("y", y(d.country))
-        .attr("width", x(d.values[0]))
-        .attr("height", y.bandwidth() / 2)
+        .attr("y", yScaleTwo(d.country))
+        .attr("width", xScaleTwo(d.values[0]))
+        .attr("height", yScaleTwo.bandwidth() / 2)
         .attr("fill", d.color)
-        .on("mouseover", function(event) {
+        .on("mouseover", function(event, d) {
             d3.select(this).attr("fill-opacity", 1);
             tooltip.transition().duration(200).style("opacity", .9);
             tooltip.html("Country: " + d.country + "<br/>2014: " + d.values[0] + "%")
@@ -72,11 +71,11 @@ data.forEach((d, i) => {
         .enter().append("rect")
         .attr("class", "bar" + i + "b")
         .attr("x", 0)
-        .attr("y", y(d.country) + y.bandwidth() / 2)
-        .attr("width", x(d.values[1]))
-        .attr("height", y.bandwidth() / 2)
+        .attr("y", yScaleTwo(d.country) + yScaleTwo.bandwidth() / 2)
+        .attr("width", xScaleTwo(d.values[1]))
+        .attr("height", yScaleTwo.bandwidth() / 2)
         .attr("fill", d3.rgb(d.color).darker(1))
-        .on("mouseover", function(event) {
+        .on("mouseover", function(event, d) {
             d3.select(this).attr("fill-opacity", 1);
             tooltip.transition().duration(200).style("opacity", .9);
             tooltip.html("Country: " + d.country + "<br/>2022: " + d.values[1] + "%")
@@ -91,9 +90,9 @@ data.forEach((d, i) => {
 
 svg.append("g")
     .attr("class", "x-axis")
-    .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x));
+    .attr("transform", "translate(0," + heightTwo + ")")
+    .call(d3.axisBottom(xScaleTwo));
 
 svg.append("g")
     .attr("class", "y-axis")
-    .call(d3.axisLeft(y));
+    .call(d3.axisLeft(yScaleTwo));

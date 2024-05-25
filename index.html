@@ -62,13 +62,25 @@
 
  
     <div id="completeSite" style="display: none;">
+        <div id="sectionOne">
         <div id="mapContainer"></div>
         <div id="chartContainer"></div>
         <div id="buttonContainer">
             <button data-dataset="electricity-access-data">Electricity Access Data</button>
             <button data-dataset="clean-energy-share">Clean Energy Share</button>
         </div>
+    </div>
 
+
+        <div id="sectionTwoBody">
+            <div class="title">Lighting 14-Countries</div>
+            <div class="title2 ">Before & After</div>
+        
+            <div class="container">
+                <div class="chart">
+                    <svg id="barchart" width="800" height="500"></svg>
+                </div>
+            </div>
 
     </div>
 
@@ -78,6 +90,7 @@
     <script src="./scripts/sceneIntro.js"></script>
     <script src="./scripts/africaMap.js"></script>
     <script src="./scripts/drawChart.js"></script>
+    <script src="./scripts/chart.js"></script>
 
 </body>
 </html>

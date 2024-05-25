@@ -1,9 +1,6 @@
 body {
     font-family: sans-serif;
-    margin: 0;
-    padding: 0;
     background-color: rgb(136, 179, 199);
-    overflow: hidden;
 }
 
 .axis {
@@ -47,21 +44,13 @@ body {
     stroke-width: 0.3px;
 }
 
-/* Container styles */
-#chartContainer, #mapContainer {
-    flex: 1; /* Each takes equal width */
-    height: calc(100vh - 50px); /* Full viewport height minus any offset if needed */
-    position: relative; /* Needed for absolute positioning inside */
-    overflow: visible;
-}
 
-#mapContainer {
-    border-left: 1px solid #ccc; /* Optional separator for clarity */
-}
+
 
 #chartContainer {
     width: 100%;
     height: 100%;
+    z-index: 1002;
 }
 
 svg {
@@ -73,4 +62,105 @@ svg {
     position: absolute;
     right: 200px;
     bottom: 100px;
+}
+
+/* SECTION ONE */
+
+#sectionOne {
+
+    margin: 20%;
+}
+
+
+/* SECTION TWO */
+
+#sectionTwoBody {
+    margin: 0;
+    background: #b3daeb77;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-size: cover;
+}
+.sectionTwoTitle {
+    font-size: 24px; 
+    font-weight: bold; 
+    font-family: Arial, sans-serif; 
+}
+.sectionTwoTitle2 {
+    font-size: 18px; 
+    font-style: italic; 
+    font-family: "Times New Roman", Times, serif; 
+}
+.sectionTwoContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 200px;
+}
+.sectionTwoChart {
+    padding: 2rem;
+    border: 1px solid rgba(193, 237, 250, 0.428);
+    box-shadow: 0 2px rgba(0, 0, 0, 10);
+}
+.sectionTwoBar {
+    fill-opacity: 0.7;
+}
+.sectionTwoBar:hover {
+    fill-opacity: 1;
+}
+.sectionTwoTooltip {
+    position: absolute;
+    text-align: center;
+    width: 120px;
+    height: auto;
+    padding: 8px;
+    font: 12px sans-serif;
+    background: lightsteelblue;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+
+.chart-svg {
+    font-family: Arial, sans-serif;
+}
+
+.chart-group {
+    fill: none;
+    stroke: #000;
+}
+
+.line {
+    fill: none;
+    stroke-width: 2px;
+}
+
+.data-point {
+    fill: #666;
+    stroke: #fff;
+    stroke-width: 1.5px;
+}
+
+.tooltip {
+    position: absolute;
+    display: none;
+    padding: 10px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    pointer-events: none;
+}
+
+.x-axis path,
+.y-axis path {
+    stroke: black;
+}
+
+.x-axis line,
+.y-axis line {
+    stroke: grey;
 }

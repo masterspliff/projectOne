@@ -1,9 +1,9 @@
 let svgChart, x, y, xAxis, yAxis, colorScale;
 
 function initializeChart() {
-    const margin = { top: 20, right: 20, bottom: 30, left: 50 },
-          width = 700 - margin.left - margin.right,
-          height = 500 - margin.top - margin.bottom;
+    const margin = { top: 30, right: 20, bottom: 30, left: 50 },
+          width = 1000 - margin.left - margin.right,
+          height = 1000 - margin.top - margin.bottom;
 
     svgChart = d3.select("#chartContainer").append("svg")
         .attr("width", width + margin.left + margin.right)
