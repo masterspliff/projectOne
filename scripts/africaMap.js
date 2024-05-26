@@ -20,6 +20,9 @@ async function getAfricanCountriesData() {
     }
 }
 
+
+
+
 async function updateData(dataset, countryName) {
     try {
         const url = `http://localhost:4000/${dataset}/${countryName}`;  // Sørg for at landets navn er korrekt kodet, hvis det indeholder specialtegn eller mellemrum
@@ -54,9 +57,9 @@ async function updateData(dataset, countryName) {
 const akonCountries = ["Mali","Niger", "Senegal", "Guinea", "Burkina Faso", "Sierra Leone", "Benin"," Equatorial Guinea", "Gabon",
         "Republic of Congo","Namibia","Madagascar","Kenya","Nigeria"];
 
-const margin = { top: 0, right: 0, bottom: 0, left: 0 }, // defining standard margins for later use
-      width = 1000;
-      height = 1000;
+const margin = { top: 10, right: 10, bottom: 10, left: 10 }, // defining standard margins for later use
+      width = 700 - margin.left - margin.right, 
+      height = 700 - margin.top - margin.bottom;
 
 const svgMap = d3.select("#mapContainer")
       .append("svg")
@@ -75,7 +78,7 @@ const tooltipMap = d3.select("body") // css styling for the tooltip
 
 async function renderMap() {
     const africanCountries = await getAfricanCountriesData(); // creating new variable and storing the data from the db. await till its loaded
-    console.log('egen liste', africanCountries); // checks if the countries is loaded correctly.
+    console.log('own list', africanCountries); // checks if the countries is loaded correctly.
 
     const geoData = await loadJSON("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson"); // world map json with svg propertiers etc. 
     const africaGeoData = geoData.features.filter(d => africanCountries.includes(d.properties.name)); // filter out all uneccesarry countires unrelated to africa. 
@@ -85,7 +88,7 @@ async function renderMap() {
 
     console.log('Missing countries:', missingCountries);
     // setting up the map projection and geographic paths
-    const projection = d3.geoMercator().scale(800).translate([width / 2, height / 1.5]); // size of the map (africa) and method to moving the center of the map
+    const projection = d3.geoMercator().scale(400).translate([width / 2, height / 1.5]); // size of the map (africa) and method to moving the center of the map
     const path = d3.geoPath().projection(projection); // setting up the svg data using geoprahic features. essentially using the mercator projecter, so d3 can use the path generator to draw the map. 
 
     svgMap.selectAll("path")
