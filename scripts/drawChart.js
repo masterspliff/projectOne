@@ -1,13 +1,13 @@
 let svgChart, x, y, xAxis, yAxis, colorScale;
 
 function initializeChart() {
-    const margin = { top: 30, right: 20, bottom: 30, left: 50 },
+    const margin = { top: 80, right: 20, bottom: 30, left: 50 },
           width = 700 - margin.left - margin.right,
-          height = 700 - margin.top - margin.bottom;
+          height = 800 - margin.top - margin.bottom;
 
     svgChart = d3.select("#chartContainer").append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
+        .attr("width", width )
+        .attr("height", height )
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 

@@ -37,6 +37,8 @@ body {
     fill: #0B3D91;
     stroke: #FFF;
     stroke-width: 1px;
+    cursor: pointer;
+
 }
 
 .country {
@@ -51,14 +53,18 @@ body {
     z-index: 0;
     display: none; 
     opacity: 0; 
+    cursor: pointer;
+
 }
 
 #chartContainer {
     width: 50%;
     height: 100%;
     position: absolute;
-    top: 20%; 
+    top: 0%; 
     right: 0%;
+    background-color: rgb(189, 189, 189);
+    padding-left: 25px;
 }
 
 
@@ -73,22 +79,18 @@ body {
 #buttonContainer {
     position: absolute;
     right: 500px;
-    bottom: 80px;
+    bottom: 30px;
 
 }
 
 /* SECTION ONE */
 
 #sectionOne {
-
     margin: 20%;
 }
 
 
 /* SECTION TWO */
-
-
-
 #sectionTwoBody {
     background: #b3daeb77;
     display: flex;
@@ -137,4 +139,33 @@ body {
     border-radius: 8px;
     pointer-events: none;
 }
+
+
+/* AFRICA MAP */
+.tooltip {
+    position: absolute;
+    background: #f9f9f9;
+    padding: 8px;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    display: none;
+    z-index: 1001;
+    pointer-events: none;
+}
+
+.country-path {
+    fill: grey; /* Default fill for other countries */
+    stroke: black;
+    stroke-width: 0.5px;
+    cursor: pointer;
+}
+
+.country-path:hover {
+    fill: #6699ff;
+}
+
+.country-path.akon-country {
+    fill: blue;
+}
+
 
