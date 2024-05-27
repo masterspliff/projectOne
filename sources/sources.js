@@ -36,7 +36,7 @@ const articles = [
     },
     {
         title:"Activating Africa",
-        content: "-	Children can effectively study at night when they previously had to sit in a small kerosene-lit room reading through thick and toxic smoke. African women can leave their houses when it's dark out with sense of security. In one area, crime decreased by 90 % once our light went up”",
+        content: "Children can effectively study at night when they previously had to sit in a small kerosene-lit room reading through thick and toxic smoke. African women can leave their houses when it's dark out with sense of security. In one area, crime decreased by 90 % once our light went up",
         source: "real-leaders.com/akon-magazine/",
         linkt:"https://real-leaders.com/akon-magazine/4/",
         image:"acon.png"
