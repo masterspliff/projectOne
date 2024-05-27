@@ -1,7 +1,7 @@
 let svgChart, x, y, xAxis, yAxis, colorScale;
 
 function initializeChart() {
-    const margin = { top: 80, right: 20, bottom: 30, left: 50 },
+    const margin = { top: 100, right: 20, bottom: 30, left: 50 },
           width = 700 - margin.left - margin.right,
           height = 800 - margin.top - margin.bottom;
 
