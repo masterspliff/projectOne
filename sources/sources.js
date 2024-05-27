@@ -33,50 +33,50 @@ const articles = [
         source: "researchgate.net",
         link: "https://www.researchgate.net/publication/335736428_Sustainable_energy_solutions_Akon_Lighting_Africa",
         image: "model.png"
+    },
+    {
+        title:"Activating Africa",
+        content: "-	Children can effectively study at night when they previously had to sit in a small kerosene-lit room reading through thick and toxic smoke. African women can leave their houses when it's dark out with sense of security. In one area, crime decreased by 90 % once our light went up”",
+        source: "real-leaders.com/akon-magazine/",
+        linkt:"https://real-leaders.com/akon-magazine/4/",
+        image:"acon.png"
     }
+
 ];
-
-function loadArticles() {
-    const container = document.getElementById('articles-container');
-
-    articles.forEach(article => {
-        const articleElement = document.createElement('div');
-        articleElement.className = 'article';
-
-        const imageElement = document.createElement('img');
-        imageElement.src = article.image;
-        imageElement.alt = article.title; 
-
-        const articleContent = document.createElement('div');
-        articleContent.className = 'article-content';
-
-        const titleElement = document.createElement('h2');
-        titleElement.textContent = article.title;
-
-        const contentElement = document.createElement('p');
-        contentElement.textContent = article.content;
-
-        const sourceElement = document.createElement('div');
-        sourceElement.className = 'source';
-        sourceElement.innerHTML = `Source: <a href="${article.link}" target="_blank">${article.source}</a>`;
-
-        articleContent.appendChild(titleElement);
-        articleContent.appendChild(contentElement);
-        articleContent.appendChild(sourceElement);
-
-        articleElement.appendChild(imageElement);
-        articleElement.appendChild(articleContent);
-
-        container.appendChild(articleElement);
-    });
-}
-
-
-
-window.addEventListener('load', function() {
-    const logo = document.getElementById('logo');
-    const heading = document.querySelector('.header h1');
-    const headingWidth = heading.offsetWidth;
-    logo.style.width = headingWidth + 'px';
-});
-window.onload = loadArticles; // loading articles
+    function loadArticles() {
+        const container = document.getElementById('articles-container');
+    
+        articles.forEach(article => {
+            const articleElement = document.createElement('div');
+            articleElement.className = 'article';
+    
+            const imageElement = document.createElement('img');
+            imageElement.src = article.image;
+            imageElement.alt = article.title;
+    
+            const articleContent = document.createElement('div');
+            articleContent.className = 'article-content';
+    
+            const titleElement = document.createElement('h2');
+            titleElement.textContent = article.title;
+    
+            const contentElement = document.createElement('p');
+            contentElement.textContent = article.content;
+    
+            const sourceElement = document.createElement('div');
+            sourceElement.className = 'source';
+            sourceElement.innerHTML = `Source: <a href="${article.link}" target="_blank">${article.source}</a>`;
+    
+            articleContent.appendChild(titleElement);
+            articleContent.appendChild(contentElement);
+            articleContent.appendChild(sourceElement);
+    
+            articleElement.appendChild(imageElement);
+            articleElement.appendChild(articleContent);
+    
+            container.appendChild(articleElement);
+        });
+    }
+    
+    window.onload = loadArticles; // loading articles
+    
