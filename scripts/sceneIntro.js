@@ -92,6 +92,6 @@ document.querySelector(".continueButton").addEventListener("click", function() {
         });
 
         // Redirect to indexTwo.html
-        window.location.href = "indexTwo.html";
+        window.location.href = "about.html";
     }, 2000); // Extended to 2000ms to match the fade-out duration of 2s
 });

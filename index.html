@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AkonTest</title>
+    <title>sceneIntro</title>
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/sceneIntroStyle.css">
-    
+
 </head>
 <body>
-
+    
     <div class="quoteContainer">
         <p id="quoteOne">"There are 600 million people living without electricity in Africa"</p>
         <p id="quoteTwo" style="display:none;">"Something Akon said"</p>
@@ -63,39 +63,8 @@
 
 <button class="continueButton" role="button">Continue</button>
 
- 
-    <div id="completeSite" style="display: none;">
-        
-        <div id="sectionOne">
-        <div id="mapContainer"></div>
-        <div id="chartContainer"></div>
-        <div id="buttonContainer">
-            <button data-dataset="electricity-access-data">Electricity Access Data</button>
-            <button data-dataset="clean-energy-share">Clean Energy Share</button>
-        </div>
-    </div>
-
-
-        <div id="sectionTwoBody">
-            <div class="title">Lighting 14-Countries</div>
-            <div class="title2 ">Before & After</div>
-        
-            <div class="container">
-                <div class="chart">
-                    <svg id="barchart" width="800" height="500"></svg>
-                </div>
-            </div>
-
-    </div>
-
-
+</body>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://unpkg.com/topojson@3"></script>
     <script src="./scripts/sceneIntro.js"></script>
-    <script src="./scripts/africaMap.js"></script>
-    <script src="./scripts/drawChart.js"></script>
-    <script src="./scripts/chart.js"></script>
-
-</body>
 </html>
-
