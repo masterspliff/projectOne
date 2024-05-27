@@ -20,6 +20,9 @@ async function getAfricanCountriesData() {
     }
 }
 
+
+
+
 async function updateData(dataset, countryName) {
     try {
         const url = `http://localhost:4000/${dataset}/${countryName}`;  // Sørg for at landets navn er korrekt kodet, hvis det indeholder specialtegn eller mellemrum
@@ -70,11 +73,12 @@ const tooltipMap = d3.select("body") // css styling for the tooltip
     .style("padding", "8px")
     .style("border", "1px solid #d9d9d9")
     .style("border-radius", "4px")
-    .style("display", "none");
+    .style("display", "none")
+    .style("z-index", "1001");
 
 async function renderMap() {
     const africanCountries = await getAfricanCountriesData(); // creating new variable and storing the data from the db. await till its loaded
-    console.log('egen liste', africanCountries); // checks if the countries is loaded correctly.
+    console.log('own list', africanCountries); // checks if the countries is loaded correctly.
 
     const geoData = await loadJSON("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson"); // world map json with svg propertiers etc. 
     const africaGeoData = geoData.features.filter(d => africanCountries.includes(d.properties.name)); // filter out all uneccesarry countires unrelated to africa. 

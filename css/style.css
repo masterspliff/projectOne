@@ -1,9 +1,6 @@
 body {
     font-family: sans-serif;
-    margin: 0;
-    padding: 0;
     background-color: rgb(136, 179, 199);
-    overflow: hidden;
 }
 
 .axis {
@@ -40,6 +37,8 @@ body {
     fill: #0B3D91;
     stroke: #FFF;
     stroke-width: 1px;
+    cursor: pointer;
+
 }
 
 .country {
@@ -47,30 +46,126 @@ body {
     stroke-width: 0.3px;
 }
 
-/* Container styles */
-#chartContainer, #mapContainer {
-    flex: 1; /* Each takes equal width */
-    height: calc(100vh - 50px); /* Full viewport height minus any offset if needed */
-    position: relative; /* Needed for absolute positioning inside */
-    overflow: visible;
-}
-
 #mapContainer {
-    border-left: 1px solid #ccc; /* Optional separator for clarity */
+    position: absolute;
+    left: 0;
+    top: 6%; 
+    z-index: 0;
+    display: none; 
+    opacity: 0; 
+    cursor: pointer;
+
 }
 
 #chartContainer {
-    width: 100%;
+    width: 50%;
     height: 100%;
+    position: absolute;
+    top: 0%; 
+    right: 0%;
+    background-color: rgb(189, 189, 189);
+    padding-left: 25px;
 }
 
-svg {
-    width: 100%; /* Full container width */
-    height: 100%; /* Full container height */
+
+#mapContainer, svg {
+    width: 1500px; /* Full container width */
+    height: 1500px; /* Full container height */
+
 }
+
+
 
 #buttonContainer {
     position: absolute;
-    right: 200px;
-    bottom: 100px;
+    right: 500px;
+    bottom: 30px;
+
 }
+
+/* SECTION ONE */
+
+#sectionOne {
+    margin: 20%;
+}
+
+
+/* SECTION TWO */
+#sectionTwoBody {
+    background: #b3daeb77;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-size: cover;
+}
+.sectionTwoTitle {
+    font-size: 24px; 
+    font-weight: bold; 
+    font-family: Arial, sans-serif; 
+}
+.sectionTwoTitle2 {
+    font-size: 18px; 
+    font-style: italic; 
+    font-family: "Times New Roman", Times, serif; 
+}
+.sectionTwoContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 200px;
+}
+.sectionTwoChart {
+    padding: 2rem;
+    border: 1px solid rgba(193, 237, 250, 0.428);
+    box-shadow: 0 2px rgba(0, 0, 0, 10);
+}
+.sectionTwoBar {
+    fill-opacity: 0.7;
+}
+.sectionTwoBar:hover {
+    fill-opacity: 1;
+}
+.sectionTwoTooltip {
+    position: absolute;
+    text-align: center;
+    width: 120px;
+    height: auto;
+    padding: 8px;
+    font: 12px sans-serif;
+    background: lightsteelblue;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+
+/* AFRICA MAP */
+.tooltip {
+    position: absolute;
+    background: #f9f9f9;
+    padding: 8px;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    display: none;
+    z-index: 1001;
+    pointer-events: none;
+}
+
+.country-path {
+    fill: grey; /* Default fill for other countries */
+    stroke: black;
+    stroke-width: 0.5px;
+    cursor: pointer;
+}
+
+.country-path:hover {
+    fill: #6699ff;
+}
+
+.country-path.akon-country {
+    fill: blue;
+}
+
+

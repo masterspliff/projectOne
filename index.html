@@ -3,25 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Renewable Energy Visualization</title>
+    <title>AkonTest</title>
     <link rel="stylesheet" href="./css/style.css">
-    <link rel="sceneIntroStylesheet" href="./css/sceneIntroStyle.css">
+    <link rel="stylesheet" href="./css/sceneIntroStyle.css">
+    
 </head>
 <body>
-    <div id="controls-container" style="text-align: center; margin-bottom: 20px;">
-        <input type="text" id="country-search" placeholder="Søg efter et land...">
-        <button id="deselect-all" style="padding: 5px 10px; margin-left: 10px;">Fjern valgte</button>
+
+    <div class="quoteContainer">
+        <p id="quoteOne">"There are 600 million people living without electricity in Africa"</p>
+        <p id="quoteTwo" style="display:none;">"Something Akon said"</p>
+        <p id="quoteThree" style="display:none;">"Access to energy supported the creation of jobs in small businesses, cafes, agriculture, allowed for evening classes for education, night transportation and safety. Everything is possible with electricity and people’s lives and communities will be forever changed!”  — Akon</p>
     </div>
 
-    <div id="visualiseringBoks">
-        <div id="map-container"></div>
-        <div id="chart-container"></div>
-        <div id="selected-countries"></div>
+</br>
+
+    <div class="globeContainer" id="globeContainer">
+        <div id="globe" style="display:none;"></div>
+    </div> 
+
+    <div class="globeContainerLeft" id="globeContainerLeft">
+        <div id="globeLeft" style="display:none;"></div>
     </div>
+
+    <div class="buttonContainer">
+        <div id="startButton">
+            <span></span>
+        </div>
+    </div>
+
+</br>
+
+    <div class="quoteContainer">
+        <p id="quoteRef">reference: IEA (2023), SDG7: Data and Projections, IEA, Paris https://www.iea.org/reports/sdg7-data-and-projections</p>
+    </div>
+
+    <div class="globeLegend">
+        <div id="farve1" class="legendBox">
+            <div class="box"></div>
+            <p>95% or more access to electricity</p>
+        </div>
+        <div id="farve2" class="legendBox">
+            <div class="box"></div>
+            <p>70% or more access to electricity</p>
+        </div>
+        <div id="farve3" class="legendBox">
+            <div class="box"></div>
+            <p>50% or more access to electricity</p>
+        </div>
+        <div id="farve4" class="legendBox">
+            <div class="box"></div>
+            <p>50% or lower access to electricity</p>
+        </div>
+        <div id="farve5" class="legendBox">
+            <div class="box"></div>
+            <p>No data</p>
+        </div>
+    </div>
+
+<button class="continueButton" role="button">Continue</button>
+
+ 
+    <div id="completeSite" style="display: none;">
+        
+        <div id="sectionOne">
+        <div id="mapContainer"></div>
+        <div id="chartContainer"></div>
+        <div id="buttonContainer">
+            <button data-dataset="electricity-access-data">Electricity Access Data</button>
+            <button data-dataset="clean-energy-share">Clean Energy Share</button>
+        </div>
+    </div>
+
+
+        <div id="sectionTwoBody">
+            <div class="title">Lighting 14-Countries</div>
+            <div class="title2 ">Before & After</div>
+        
+            <div class="container">
+                <div class="chart">
+                    <svg id="barchart" width="800" height="500"></svg>
+                </div>
+            </div>
+
+    </div>
+
 
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://unpkg.com/topojson@3"></script>
-    <script src="./scripts/loadSpinner.js"></script> 
-    <script src="./scripts/example.js"></script>
+    <script src="./scripts/sceneIntro.js"></script>
+    <script src="./scripts/africaMap.js"></script>
+    <script src="./scripts/drawChart.js"></script>
+    <script src="./scripts/chart.js"></script>
+
 </body>
 </html>
+

@@ -1,15 +1,17 @@
 let svgChart, x, y, xAxis, yAxis, colorScale;
 
 function initializeChart() {
-    const margin = { top: 20, right: 20, bottom: 30, left: 50 },
+    const margin = { top: 100, right: 20, bottom: 30, left: 50 },
           width = 700 - margin.left - margin.right,
-          height = 500 - margin.top - margin.bottom;
+          height = 800 - margin.top - margin.bottom;
 
     svgChart = d3.select("#chartContainer").append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
+        .attr("width", width )
+        .attr("height", height )
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
+
+        
 
     x = d3.scaleLinear().range([0, width]);
     y = d3.scaleLinear().range([height, 0]);
@@ -18,13 +20,43 @@ function initializeChart() {
           .attr("transform", `translate(0,${height})`);
     yAxis = svgChart.append("g");
 
-    colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+    colorScale = d3.scaleOrdinal()
+        .domain(['ALLAREA', 'RURAL', 'URBAN'])
+        .range(d3.schemeCategory10);  // or any other suitable color scheme
+}
+
+function drawLegend() {
+    const legend = svgChart.append('g')
+      .attr('class', 'legend')
+      .attr('transform', `translate(${width}, 30)`);  // Adjust position based on layout
+
+    legend.selectAll('rect')
+      .data(colorScale.domain())
+      .enter()
+      .append('rect')
+        .attr('x', 0)
+        .attr('y', (d, i) => i * 24)  // Spacing between legend entries
+        .attr('width', 18)
+        .attr('height', 18)
+        .attr('fill', colorScale);
+
+    legend.selectAll('text')
+      .data(colorScale.domain())
+      .enter()
+      .append('text')
+        .attr('x', 24)
+        .attr('y', (d, i) => i * 24 + 14) // Align text slightly lower than rect
+        .text(d => d);
 }
 
 function drawChart(selectedCountriesData) {
     svgChart.selectAll(".line").remove();
     svgChart.selectAll("circle").remove();
     svgChart.selectAll(".end-label").remove();
+    svgChart.selectAll(".countryTitle").remove(); // Remove existing title if any
+    
+    drawLegend();  // Call this after setting up the chart
+
 
     const allData = selectedCountriesData.flatMap(country => country.data);
     x.domain(d3.extent(allData, d => d.year));
@@ -32,6 +64,19 @@ function drawChart(selectedCountriesData) {
 
     xAxis.call(d3.axisBottom(x).tickFormat(d3.format("d")));
     yAxis.call(d3.axisLeft(y));
+
+    // Add a title for the selected country (assuming only one country is selected for simplicity)
+    if (selectedCountriesData.length === 1) {
+        console.log("Appending title for:", selectedCountriesData[0].GeoAreaName);  // Debugging line
+        svgChart.append("text")
+            .attr("class", "countryTitle")
+            .attr("x", x.range()[1] / 2)
+            .attr("y", 20) // This positions it 20 pixels down from the top margin.
+            .attr("text-anchor", "middle")
+            .style("font-size", "16px")
+            .style("font-weight", "bold")
+            .text(selectedCountriesData[0].GeoAreaName);
+    }
 
     // Tooltip setup
     const tooltip = d3.select("body").append("div")
