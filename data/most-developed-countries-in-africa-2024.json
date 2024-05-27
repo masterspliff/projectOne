@@ -1,0 +1,272 @@
+[
+  {
+    "country": "Nigeria",
+    "Hdi2021": 0.542,
+    "HdiTier": "Low"
+  },
+  {
+    "country": "Ethiopia",
+    "Hdi2021": 0.489,
+    "HdiTier": "Low"
+  },
+  {
+    "country": "Egypt",
+    "Hdi2021": 0.726,
+    "HdiTier": "High"
+  },
+  {
+    "country": "DR Congo",
+    "Hdi2021": 0.475,
+    "HdiTier": "Low"
+  },
+  {
+    "country": "Tanzania",
+    "Hdi2021": 0.529,
+    "HdiTier": "Low"
+  },
+  {
+    "country": "South Africa",
+    "Hdi2021": 0.721,
+    "HdiTier": "High"
+  },
+  {
+    "country": "Kenya",
+    "Hdi2021": 0.596,
+    "HdiTier": "Medium"
+  },
+  {
+    "country": "Uganda",
+    "Hdi2021": 0.545,
+    "HdiTier": "Medium"
+  },
+  {
+    "country": "Sudan",
+    "Hdi2021": 0.516,
+    "HdiTier": "Low"
+  },
+  {
+    "country": "Algeria",
+    "Hdi2021": 0.74,
+    "HdiTier": "High"
+  },
+  {
+    "country": "Morocco",
+    "Hdi2021": 0.688,
+    "HdiTier": "Medium"
+  },
+  {
+    "country": "Angola",
+    "Hdi2021": 0.59,
+    "HdiTier": "Medium"
+  },
+  {
+    "country": "Mozambique",
+    "Hdi2021": 0.459,
+    "HdiTier": "Low"
+  },
+  {
+    "country": "Ghana",
+    "Hdi2021": 0.6,
+    "HdiTier": "Medium"
+  },
+  {
+    "country": "Madagascar",
+    "Hdi2021": 0.484,
+    "HdiTier": "Low"
+  },
+  {
+    "country": "Ivory Coast",
+    "Hdi2021": 0.53,
+    "HdiTier": "Low"
+  },
+  {
+    "country": "Cameroon",
+    "Hdi2021": 0.581,
+    "HdiTier": "Medium"
+  },
+  {
+    "country": "Niger",
+    "Hdi2021": 0.389,
+    "HdiTier": "Low"
+  },
+  {
+    "country": "Mali",
+    "Hdi2021": 0.408,
+    "HdiTier": "Low"
+  },
+  {
+    "country": "Burkina Faso",
+    "Hdi2021": 0.445,
+    "HdiTier": "Low"
+  },
+  {
+    "country": "Malawi",
+    "Hdi2021": 0.509,
+    "HdiTier": "Low"
+  },
+  {
+    "country": "Zambia",
+    "Hdi2021": 0.565,
+    "HdiTier": "Medium"
+  },
+  {
+    "country": "Chad",
+    "Hdi2021": 0.393,
+    "HdiTier": "Low"
+  },
+  {
+    "country": "Somalia",
+    "Hdi2021": null,
+    "HdiTier": "Low"
+  },
+  {
+    "country": "Senegal",
+    "Hdi2021": 0.512,
+    "HdiTier": "Low"
+  },
+  {
+    "country": "Zimbabwe",
+    "Hdi2021": 0.549,
+    "HdiTier": "Medium"
+  },
+  {
+    "country": "Guinea",
+    "Hdi2021": 0.467,
+    "HdiTier": "Low"
+  },
+  {
+    "country": "Rwanda",
+    "Hdi2021": 0.539,
+    "HdiTier": "Low"
+  },
+  {
+    "country": "Benin",
+    "Hdi2021": 0.502,
+    "HdiTier": "Low"
+  },
+  {
+    "country": "Burundi",
+    "Hdi2021": 0.419,
+    "HdiTier": "Low"
+  },
+  {
+    "country": "Tunisia",
+    "Hdi2021": 0.729,
+    "HdiTier": "High"
+  },
+  {
+    "country": "South Sudan",
+    "Hdi2021": 0.381,
+    "HdiTier": "Low"
+  },
+  {
+    "country": "Togo",
+    "Hdi2021": 0.545,
+    "HdiTier": "Low"
+  },
+  {
+    "country": "Sierra Leone",
+    "Hdi2021": 0.456,
+    "HdiTier": "Low"
+  },
+  {
+    "country": "Libya",
+    "Hdi2021": 0.746,
+    "HdiTier": "High"
+  },
+  {
+    "country": "Central African Republic",
+    "Hdi2021": 0.387,
+    "HdiTier": "Low"
+  },
+  {
+    "country": "Liberia",
+    "Hdi2021": 0.484,
+    "HdiTier": "Low"
+  },
+  {
+    "country": "Mauritania",
+    "Hdi2021": 0.538,
+    "HdiTier": "Low"
+  },
+  {
+    "country": "Eritrea",
+    "Hdi2021": 0.49,
+    "HdiTier": "Low"
+  },
+  {
+    "country": "Gambia",
+    "Hdi2021": 0.49,
+    "HdiTier": "Low"
+  },
+  {
+    "country": "Botswana",
+    "Hdi2021": 0.68,
+    "HdiTier": "High"
+  },
+  {
+    "country": "Namibia",
+    "Hdi2021": 0.616,
+    "HdiTier": "Medium"
+  },
+  {
+    "country": "Gabon",
+    "Hdi2021": 0.687,
+    "HdiTier": "Medium"
+  },
+  {
+    "country": "Lesotho",
+    "Hdi2021": 0.522,
+    "HdiTier": "Low"
+  },
+  {
+    "country": "Guinea-Bissau",
+    "Hdi2021": 0.482,
+    "HdiTier": "Low"
+  },
+  {
+    "country": "Equatorial Guinea",
+    "Hdi2021": 0.647,
+    "HdiTier": "Medium"
+  },
+  {
+    "country": "Mauritius",
+    "Hdi2021": 0.79,
+    "HdiTier": "High"
+  },
+  {
+    "country": "Eswatini",
+    "Hdi2021": 0.612,
+    "HdiTier": "Medium"
+  },
+  {
+    "country": "Djibouti",
+    "Hdi2021": 0.512,
+    "HdiTier": "Low"
+  },
+  {
+    "country": "Comoros",
+    "Hdi2021": 0.585,
+    "HdiTier": "Medium"
+  },
+  {
+    "country": "Cape Verde",
+    "Hdi2021": 0.65,
+    "HdiTier": "Medium"
+  },
+  {
+    "country": "Sao Tome and Principe",
+    "Hdi2021": 0.609,
+    "HdiTier": "Medium"
+  },
+  {
+    "country": "Seychelles",
+    "Hdi2021": 0.795,
+    "HdiTier": "Very High"
+  },
+  {
+    "country": "Total",
+    "Hdi2021": 0.556557692307692,
+    "HdiTier": null
+  }
+]

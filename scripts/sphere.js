@@ -95,14 +95,18 @@ export default async function createGlobe() {
             }));
 
     const accessLevels = {
-        "full": "#90D26D", "upperMedium": "#FFA500",
-        "medium": "#FFD700", "none": "#FF4500"
+        "full": "#90D26D",
+        "upperMedium": "#FFA500",
+        "medium": "#FFD700",
+        "loverMedium": "FF4500",
+        "none": "#FF0000"
     };
 
     function getAccessColor(value) {
         if (value >= 95) return accessLevels["full"];
         else if (value >= 70) return accessLevels["upperMedium"];
         else if (value >= 50) return accessLevels["medium"];
+        else if (value <= 50) return accessLevels["lowerMedium"];
         else return accessLevels["none"];
     }
 
