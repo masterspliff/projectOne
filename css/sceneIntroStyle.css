@@ -64,7 +64,7 @@
     right: 0;            /* Align the element to the right side */
     top: 50%;            /* Position the element vertically */
     transform: translateY(-50%); /* Center the element vertically */
-    width: 45%;
+    width: 38%;
     font-family: Helvetica;  
     font-size: 27px; 
     opacity: 0; 
@@ -74,31 +74,34 @@
 .legendBox {
     display: flex;
     align-items: center;
-    margin-bottom: 5px;
+    margin-bottom: 2%;
 }
 
 .legendBox .box {
     width: 20px;
     height: 20px;
-    margin-right: 10px;
+    margin-right: 2%;
 }
 
-#farve1 .box {
-    background-color: #00FF00;
+#colour1 .box {
+    background-color: #90D26D;
 }
 
-#farve2 .box {
+#colour2 .box {
     background-color: #FFD700;
 }
 
-#farve3 .box {
+#colour3 .box {
+    background-color: #FFA500;
+}
+
+#colour4 .box {
     background-color: #FF4500;
 }
 
-#farve4 .box {
-    background-color: grey;
+#colour5 .box {
+    background-color: #808080;
 }
-
 
 /* fade in / fade CSS */
 /* "fade" represents a fade-out effect */

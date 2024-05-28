@@ -96,17 +96,17 @@ export default async function createGlobe() {
 
     const accessLevels = {
         "full": "#90D26D",
-        "upperMedium": "#FFA500",
-        "medium": "#FFD700",
-        "loverMedium": "FF4500",
-        "none": "#FF0000"
+        "upperMedium": "#FFD700",
+        "medium": "#FFA500",
+        "lowerMedium": "#FF4500",
+        "none": "#808080"
     };
 
     function getAccessColor(value) {
         if (value >= 95) return accessLevels["full"];
         else if (value >= 70) return accessLevels["upperMedium"];
         else if (value >= 50) return accessLevels["medium"];
-        else if (value <= 50) return accessLevels["lowerMedium"];
+        else if (value >= 30) return accessLevels["lowerMedium"];
         else return accessLevels["none"];
     }
 
