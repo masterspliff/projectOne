@@ -44,8 +44,14 @@
     font-style: bold;
 }
 
+#quoteTwo {
+    font-size: 30px;
+    text-align: center; 
+    max-width: 60%;
+}
+
 #quoteThree {
-    font-size: 20px;
+    font-size: 25px;
     text-align: center; 
     max-width: 55%;
 }
