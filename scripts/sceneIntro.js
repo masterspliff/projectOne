@@ -91,26 +91,7 @@ document.querySelector(".continueButton").addEventListener("click", function() {
             element.style.display = "none";
         });
 
-        // Make the completeSite div visible
-        const completeSite = document.getElementById("completeSite");
-        completeSite.style.display = "block";
-        completeSite.style.opacity = 0;
-
-        // Fade in the completeSite div
-        setTimeout(() => {
-            completeSite.style.transition = "opacity 1.5s";
-            completeSite.style.opacity = 1;
-
-            // Show mapContainer
-            const mapContainer = document.getElementById("mapContainer");
-            mapContainer.style.display = "block";
-            mapContainer.style.opacity = 0;
-
-            // Fade in the mapContainer
-            setTimeout(() => {
-                mapContainer.style.transition = "opacity 1.5s";
-                mapContainer.style.opacity = 1;
-            }, 100); // Short delay to ensure the display property is applied before starting the fade-in effect
-        }, 100); // Short delay to ensure the display property is applied before starting the fade-in effect
+        // Redirect to indexTwo.html
+        window.location.href = "about.html";
     }, 2000); // Extended to 2000ms to match the fade-out duration of 2s
 });
