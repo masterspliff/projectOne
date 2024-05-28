@@ -21,35 +21,83 @@ async function getAfricanCountriesData() {
     }
 }
 
-async function updateData(countryName) {
+async function fetchAndUpdateData(countryName) {
     try {
-        const url = `http://localhost:4000/electricity-access-data/${countryName}`;  // Ensure the country's name is properly encoded if it contains special characters or spaces
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        console.log("Fetched data:", data); // Log data immediately after receiving
+        const encodedCountryName = encodeURIComponent(countryName); // Properly encode the country name
+        const electricityDataUrl = `http://localhost:4000/electricity-access-data/${encodedCountryName}`;
+        const hdiDataUrl = '../data/HDI_DATA_Total.json';
 
-        // Format data for ALLAREA, RURAL, and URBAN
+        // Fetching both datasets concurrently using Promise.all
+        const [electricityResponse, hdiResponse] = await Promise.all([
+            fetch(electricityDataUrl),
+            fetch(hdiDataUrl)
+        ]);
+
+        // Check if both responses are OK
+        if (!electricityResponse.ok) {
+            throw new Error(`HTTP error! status: ${electricityResponse.status}`);
+        }
+        if (!hdiResponse.ok) {
+            console.warn(`HTTP warning! Unable to fetch HDI data. Status: ${hdiResponse.status}`);
+        }
+
+        const electricityData = await electricityResponse.json();
+        const allCountriesHDI = hdiResponse.ok ? await hdiResponse.json() : null;
+
+        console.log("Fetched electricity data:", electricityData);
+        if (allCountriesHDI) {
+            console.log("Fetched all HDI data:", allCountriesHDI);
+        } else {
+            console.log("HDI data not available for:", countryName);
+        }
+
+        // Process electricity data
         const categories = ['ALLAREA', 'RURAL', 'URBAN'];
-        const formattedData = categories.map(category => ({
+        const formattedElectricityData = categories.map(category => ({
             GeoAreaName: countryName,
             category: category,
-            data: data.filter(item => item.Location === category).map(item => 
+            data: electricityData.filter(item => item.Location === category).map(item =>
                 Object.keys(item).filter(key => !isNaN(key) && key.length === 4).map(year => ({
                     year: parseInt(year, 10),
                     value: parseFloat(item[year])
                 })).sort((a, b) => a.year - b.year)
-            ).flat()  // Flatten the array if necessary
+            ).flat()
         }));
-        
-        console.log("Formatted data for chart:", formattedData); // Log after data is formatted
-        drawChart(formattedData);  // Call the drawChart function from drawChartTwo.js
+
+        // Initialize the array for chart data with electricity data
+        const chartData = formattedElectricityData;
+
+        // Add HDI data if available
+        if (allCountriesHDI) {
+            const countryHDI = allCountriesHDI.HDIData.find(country => country.Country === countryName);
+            if (countryHDI) {
+                const formattedHDI = {
+                    GeoAreaName: countryName,
+                    category: 'HDI',
+                    data: Object.keys(countryHDI)
+                        .filter(key => !isNaN(key) && key.length === 4)
+                        .map(year => ({
+                            year: parseInt(year, 10),
+                            value: parseFloat(countryHDI[year]) * 100
+                        }))
+                        .sort((a, b) => a.year - b.year)
+                };
+                chartData.push(formattedHDI); // Only add HDI data if found
+                console.log("Formatted HDI data for chart:", formattedHDI);
+            } else {
+                console.warn('Country not found in HDI data:', countryName);
+            }
+        }
+
+        console.log("Formatted electricity data for chart:", formattedElectricityData);
+        console.log("Final chart data being passed to drawChart:", chartData);
+        drawChart(chartData);
     } catch (error) {
-        console.error('Failed to update data:', error);
+        console.error('Failed to fetch or process data:', error);
     }
 }
+
+
 
 const akonCountries = ["Mali","Niger", "Senegal", "Guinea", "Burkina Faso", "Sierra Leone", "Benin"," Equatorial Guinea", "Gabon",
         "Republic of Congo","Namibia","Madagascar","Kenya","Nigeria"];
@@ -131,6 +179,7 @@ async function renderMap() {
             tooltipMap.style("display", "none"); // removes the tooltip when not any longer hovered over the country
         })
         .on("click", async function (event, d) { // click function
-            updateData(d.properties.name); // fetching the data from the selected country
+            fetchAndUpdateData(d.properties.name); // fetching the data from the selected country
         });
+        
 }

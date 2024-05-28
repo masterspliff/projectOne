@@ -22,7 +22,6 @@ h1 {
 }
 
 .map, .graph {
-    border: 5px solid black;
     width: 45%;
     height: 60vh;
     display: flex;
@@ -42,13 +41,17 @@ h1 {
 }
 
 
+
+
 /* New styles for the info box */
 .info-box {
+    position: relative;
     border: 2px solid black;
     width: 90%;
     padding: 10px;
-    margin-top: 20px;
+    margin-top: 100px;
     text-align: left;
+    height: 100%;
 }
 
 /* Media queries for smaller screens */
