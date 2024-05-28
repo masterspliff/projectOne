@@ -84,7 +84,7 @@
 }
 
 #farve1 .box {
-    background-color: #00FF00;
+    background-color: #90D26D;
 }
 
 #farve2 .box {
@@ -92,13 +92,16 @@
 }
 
 #farve3 .box {
+    background-color: #FFA500;
+}
+
+#farve4 .box {
     background-color: #FF4500;
 }
 
 #farve4 .box {
-    background-color: grey;
+    background-color: #808080;
 }
-
 
 /* fade in / fade CSS */
 /* "fade" represents a fade-out effect */
