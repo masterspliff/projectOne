@@ -4,8 +4,9 @@ function initializeChart() {
     const margin = { top: 100, right: 120, bottom: 30, left: 50 };
     
     const containerWidth = document.querySelector("#graphContainer").clientWidth;
+    const containerHeight = document.querySelector("#graphContainer").clientHeight;
     const width = containerWidth - margin.left - margin.right;
-    const height = 800 - margin.top - margin.bottom;
+    const height = containerHeight - margin.top - margin.bottom;
 
     svgChart = d3.select("#graphContainer").append("svg")
         .attr("width", containerWidth)

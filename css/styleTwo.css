@@ -56,7 +56,7 @@ h1 {
 
 /* Media queries for smaller screens */
 @media (max-width: 768px) {
-    .map, .graph {
+    .container {
         width: 90%;
         height: 50vh;
     }

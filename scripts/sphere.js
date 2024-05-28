@@ -64,6 +64,7 @@ export default async function createGlobe() {
         "North Macedonia": "Macedonia", 
         "Kosovo": "Kosovo", 
         "South Sudan": "S. Sudan",
+        "S. Sudan": "South Sudan",
         "Eswatini": "eSwatini", 
         "Nederland": "Netherlands", 
 
