@@ -62,6 +62,7 @@ function drawLegend() {
 }
 
 function drawChart(selectedCountriesData) {
+
     svgChart.selectAll(".line").remove();
     svgChart.selectAll("circle").remove();
     svgChart.selectAll(".end-label").remove();
@@ -119,7 +120,9 @@ function drawChart(selectedCountriesData) {
 
         const lineFunction = d3.line()
             .x(d => x(d.year))
-            .y(d => y(d.value));
+            .y(d => y(d.value))
+            .curve(d3.curveCatmullRom.alpha(0.5));
+
 
         // The lines being drawn on the graph. 
         const path = svgChart.append("path")

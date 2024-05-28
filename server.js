@@ -22,7 +22,7 @@ app.post('/upload-csv', async (req, res) => {
     }
 
     try {
-        await populateDataFromCSV(filePath, tableName);
+        await db.populateDataFromCSV(filePath, tableName);
         res.status(201).json({ message: 'CSV data successfully uploaded and inserted.' });
     } catch (err) {
         res.status(500).json({ message: 'Failed to process CSV file.', error: err.message });
