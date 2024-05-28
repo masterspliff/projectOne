@@ -3,8 +3,11 @@ let svgChart, x, y, xAxis, yAxis, colorScale, chartDimensions;
 function initializeChart() {
     const margin = { top: 100, right: 120, bottom: 30, left: 50 };
     
-    const containerWidth = document.querySelector("#graphContainer").clientWidth;
+
+    // dynamically change the svg height + width to the users screen.
+    const containerWidth = document.querySelector("#graphContainer").clientWidth; 
     const containerHeight = document.querySelector("#graphContainer").clientHeight;
+
     const width = containerWidth - margin.left - margin.right;
     const height = containerHeight - margin.top - margin.bottom;
 
@@ -19,11 +22,27 @@ function initializeChart() {
     x = d3.scaleLinear().range([0, width]);
     y = d3.scaleLinear().range([height, 0]);
 
-    // All the styling applied to x-axis
+// All the styling applied to x-axis
     xAxis = svgChart.append("g")
         .attr("transform", `translate(0,${height})`)
         .style("font-weight", "bold")  // Make the x-axis labels bold
-        .style("font-size", "20px");
+        .style("font-size", (d) => {
+            if (d === "2000" || d === "2014") {
+                return "20px";
+            } else {
+                return "10px";
+            }
+        });
+
+    // Apply color styles separately
+    xAxis.selectAll("text")
+        .style("fill", (d) => {
+            if (d === "2014") {
+                return "blue";
+            } else {
+                return "black";  // Default color
+            }
+        });
 
     // All the styling applied to y-axis
     yAxis = svgChart.append("g")
@@ -193,3 +212,8 @@ document.addEventListener("DOMContentLoaded", initializeChart);
 
 
 
+
+
+
+// SPLIT URBAN/RUAL op med en knap
+// Stiplet linjer?
