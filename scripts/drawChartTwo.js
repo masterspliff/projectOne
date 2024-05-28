@@ -41,6 +41,13 @@ function drawLegend() {
       .attr('class', 'legend')
       .attr('transform', `translate(${chartDimensions.width + 20}, 0)`);  // Position legend to the right of the chart
 
+    const legendLabels = {
+        'ALLAREA': 'Total',
+        'RURAL': 'Rural',
+        'URBAN': 'Urban',
+        'HDI': 'HDI'
+    };
+
     legend.selectAll('rect')
       .data(colorScale.domain())
       .enter()
@@ -58,10 +65,12 @@ function drawLegend() {
         .attr('x', 24)
         .attr('y', (d, i) => i * 24 + 14) // Align text slightly lower than rect
         .style("font-weight", "bold")  // Make the legend text bold
-        .text(d => d);
+        .text(d => legendLabels[d] || d); // Use the mapped label or the original if no mapping exists
 }
 
+
 function drawChart(selectedCountriesData) {
+    console.log("Received data for chart:", selectedCountriesData); // Debugging line
 
     svgChart.selectAll(".line").remove();
     svgChart.selectAll("circle").remove();
@@ -91,16 +100,19 @@ function drawChart(selectedCountriesData) {
         .style("stroke", "black");  // Optional: set tick line color
 
     // Add a title for the selected country (assuming only one country is selected for simplicity)
-    if (selectedCountriesData.length === 1) {
+    // Check if there is exactly one country selected
+    if (selectedCountriesData.length === 4 || 3) {
         console.log("Appending title for:", selectedCountriesData[0].GeoAreaName);  // Debugging line
         svgChart.append("text")
             .attr("class", "countryTitle")
             .attr("x", chartDimensions.width / 2)
-            .attr("y", -40) // This positions it 40 pixels up from the top margin to ensure visibility
+            .attr("y", -20) // This positions it 40 pixels up from the top margin to ensure visibility
             .attr("text-anchor", "middle")
-            .style("font-size", "16px")
+            .style("font-size", "30px")
             .style("font-weight", "bold")
             .text(selectedCountriesData[0].GeoAreaName);
+    } else {
+        console.log("Multiple or no countries selected, not adding a title.");
     }
 
     // Tooltip setup
