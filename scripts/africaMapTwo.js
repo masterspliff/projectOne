@@ -90,14 +90,12 @@ async function fetchAndUpdateData(countryName) {
         }
 
         console.log("Formatted electricity data for chart:", formattedElectricityData);
+        console.log("Final chart data being passed to drawChart:", chartData);
         drawChart(chartData);
     } catch (error) {
         console.error('Failed to fetch or process data:', error);
     }
 }
-
-
-
 
 
 

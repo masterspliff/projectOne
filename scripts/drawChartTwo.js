@@ -3,9 +3,13 @@ let svgChart, x, y, xAxis, yAxis, colorScale, chartDimensions;
 function initializeChart() {
     const margin = { top: 100, right: 120, bottom: 30, left: 50 };
     
-    const containerWidth = document.querySelector("#graphContainer").clientWidth;
+
+    // dynamically change the svg height + width to the users screen.
+    const containerWidth = document.querySelector("#graphContainer").clientWidth; 
+    const containerHeight = document.querySelector("#graphContainer").clientHeight;
+
     const width = containerWidth - margin.left - margin.right;
-    const height = 800 - margin.top - margin.bottom;
+    const height = containerHeight - margin.top - margin.bottom;
 
     svgChart = d3.select("#graphContainer").append("svg")
         .attr("width", containerWidth)
@@ -18,11 +22,27 @@ function initializeChart() {
     x = d3.scaleLinear().range([0, width]);
     y = d3.scaleLinear().range([height, 0]);
 
-    // All the styling applied to x-axis
+// All the styling applied to x-axis
     xAxis = svgChart.append("g")
         .attr("transform", `translate(0,${height})`)
         .style("font-weight", "bold")  // Make the x-axis labels bold
-        .style("font-size", "20px");
+        .style("font-size", (d) => {
+            if (d === "2000" || d === "2014") {
+                return "20px";
+            } else {
+                return "10px";
+            }
+        });
+
+    // Apply color styles separately
+    xAxis.selectAll("text")
+        .style("fill", (d) => {
+            if (d === "2014") {
+                return "blue";
+            } else {
+                return "black";  // Default color
+            }
+        });
 
     // All the styling applied to y-axis
     yAxis = svgChart.append("g")
@@ -41,6 +61,13 @@ function drawLegend() {
       .attr('class', 'legend')
       .attr('transform', `translate(${chartDimensions.width + 20}, 0)`);  // Position legend to the right of the chart
 
+    const legendLabels = {
+        'ALLAREA': 'Total',
+        'RURAL': 'Rural',
+        'URBAN': 'Urban',
+        'HDI': 'HDI'
+    };
+
     legend.selectAll('rect')
       .data(colorScale.domain())
       .enter()
@@ -58,10 +85,12 @@ function drawLegend() {
         .attr('x', 24)
         .attr('y', (d, i) => i * 24 + 14) // Align text slightly lower than rect
         .style("font-weight", "bold")  // Make the legend text bold
-        .text(d => d);
+        .text(d => legendLabels[d] || d); // Use the mapped label or the original if no mapping exists
 }
 
+
 function drawChart(selectedCountriesData) {
+    console.log("Received data for chart:", selectedCountriesData); // Debugging line
 
     svgChart.selectAll(".line").remove();
     svgChart.selectAll("circle").remove();
@@ -91,16 +120,19 @@ function drawChart(selectedCountriesData) {
         .style("stroke", "black");  // Optional: set tick line color
 
     // Add a title for the selected country (assuming only one country is selected for simplicity)
-    if (selectedCountriesData.length === 1) {
+    // Check if there is exactly one country selected
+    if (selectedCountriesData.length === 4 || 3) {
         console.log("Appending title for:", selectedCountriesData[0].GeoAreaName);  // Debugging line
         svgChart.append("text")
             .attr("class", "countryTitle")
             .attr("x", chartDimensions.width / 2)
-            .attr("y", -40) // This positions it 40 pixels up from the top margin to ensure visibility
+            .attr("y", -20) // This positions it 40 pixels up from the top margin to ensure visibility
             .attr("text-anchor", "middle")
-            .style("font-size", "16px")
+            .style("font-size", "30px")
             .style("font-weight", "bold")
             .text(selectedCountriesData[0].GeoAreaName);
+    } else {
+        console.log("Multiple or no countries selected, not adding a title.");
     }
 
     // Tooltip setup
@@ -180,3 +212,8 @@ document.addEventListener("DOMContentLoaded", initializeChart);
 
 
 
+
+
+
+// SPLIT URBAN/RUAL op med en knap
+// Stiplet linjer?

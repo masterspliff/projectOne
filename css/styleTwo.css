@@ -41,6 +41,8 @@ h1 {
 }
 
 
+
+
 /* New styles for the info box */
 .info-box {
     position: relative;
@@ -54,7 +56,7 @@ h1 {
 
 /* Media queries for smaller screens */
 @media (max-width: 768px) {
-    .map, .graph {
+    .container {
         width: 90%;
         height: 50vh;
     }
@@ -139,52 +141,3 @@ body {
     bottom: 30px;
 }
 
-/* SECTION TWO */
-#sectionTwoBody {
-    background: #b3daeb77;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background-size: cover;
-}
-.sectionTwoTitle {
-    font-size: 24px; 
-    font-weight: bold; 
-    font-family: Arial, sans-serif; 
-}
-.sectionTwoTitle2 {
-    font-size: 18px; 
-    font-style: italic; 
-    font-family: "Times New Roman", Times, serif; 
-}
-.sectionTwoContainer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 200px;
-}
-.sectionTwoChart {
-    padding: 2rem;
-    border: 1px solid rgba(193, 237, 250, 0.428);
-    box-shadow: 0 2px rgba(0, 0, 0, 10);
-}
-.sectionTwoBar {
-    fill-opacity: 0.7;
-}
-.sectionTwoBar:hover {
-    fill-opacity: 1;
-}
-.sectionTwoTooltip {
-    position: absolute;
-    text-align: center;
-    width: 120px;
-    height: auto;
-    padding: 8px;
-    font: 12px sans-serif;
-    background: lightsteelblue;
-    border: 0px;
-    border-radius: 8px;
-    pointer-events: none;
-}
