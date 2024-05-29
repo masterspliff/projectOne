@@ -97,20 +97,30 @@ async function fetchAndUpdateData(countryName) {
     }
 }
 
+async function loadCountryInfo() {
+    try {
+        const url = './data/countryInfo.json'; 
+        const response = await fetch(url);
+        return response.json(); 
+    } catch (error) {
+        console.error('Failed to load country information:', error);
+        return {};
+    }
+}
 
+document.addEventListener('DOMContentLoaded', async function() {
+    console.log('DOM fully loaded and parsed');
+    countryInfo = await loadCountryInfo(); // Load the country information once and use it later
+    renderMap(countryInfo);
+    window.addEventListener('resize', () => renderMap(countryInfo)); // Re-render map on window resize
+});
 
 const akonCountries = ["Mali","Niger", "Senegal", "Guinea", "Burkina Faso", "Sierra Leone", "Benin"," Equatorial Guinea", "Gabon",
         "Republic of Congo","Namibia","Madagascar","Kenya","Nigeria"];
 
 const margin = { top: 10, right: 10, bottom: 10, left: 10 };
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM fully loaded and parsed');
-    renderMap();
-    window.addEventListener('resize', renderMap); // Re-render map on window resize
-});
-
-async function renderMap() {
+async function renderMap(countryInfo) {
     // Clear existing SVG
     d3.select("#mapContainer").selectAll("*").remove();
 
@@ -124,7 +134,7 @@ async function renderMap() {
           .append("g")
           .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    const tooltipMap = d3.select("body") // css styling for the tooltip
+    const tooltipMap = d3.select("body")
         .append("div")
         .attr("class", "tooltip")
         .style("position", "absolute")
@@ -135,51 +145,59 @@ async function renderMap() {
         .style("display", "none")
         .style("z-index", "1001");
 
-    const africanCountries = await getAfricanCountriesData(); // creating new variable and storing the data from the db. await till its loaded
-    console.log('Own list of African countries:', africanCountries); // checks if the countries are loaded correctly.
+    const africanCountries = await getAfricanCountriesData();
+    console.log('Own list of African countries:', africanCountries);
 
-    const geoData = await loadJSON("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson"); // world map json with svg properties etc. 
-    const africaGeoData = geoData.features.filter(d => africanCountries.includes(d.properties.name)); // filter out all unnecessary countries unrelated to Africa. 
-    
+    const geoData = await loadJSON("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson");
+    const africaGeoData = geoData.features.filter(d => africanCountries.includes(d.properties.name));
     console.log('Filtered list of African countries:', africaGeoData);
-    let missingCountries = africanCountries.filter(country => !africaGeoData.some(geoCountry => geoCountry.properties.name === country));
 
+    let missingCountries = africanCountries.filter(country => !africaGeoData.some(geoCountry => geoCountry.properties.name === country));
     console.log('Missing countries:', missingCountries);
-    // setting up the map projection and geographic paths
+
     const projection = d3.geoMercator()
                          .scale(containerWidth / 2)
-                         .translate([containerWidth / 2, containerHeight / 2]); // center the map in the container
+                         .translate([containerWidth / 2, containerHeight / 2]);
 
-    const path = d3.geoPath().projection(projection); // setting up the svg data using geographic features. essentially using the mercator projector, so d3 can use the path generator to draw the map. 
+    const path = d3.geoPath().projection(projection);
 
     svgMap.selectAll("path")
         .data(africaGeoData)
         .enter()
         .append("path")
         .attr("d", path)
-        .attr("fill", function(d) {
-            if (akonCountries.includes(d.properties.name)) {
-                return "blue"; // color for countries in akonCountries list
-            } else {
-                return "grey"; // color for other countries
-            }
-        })
+        .attr("fill", function(d) { return akonCountries.includes(d.properties.name) ? "blue" : "grey"; })
         .attr("stroke", "black")
         .attr("stroke-width", 0.5)
-        .on("mouseover", function (event, d) { // hover effects starts here
-            d3.select(this).attr("fill", "#6699ff");  // added color when hovering over a country.
-            tooltipMap.style("display", "block") // displaying the country name when hovering
-                .html(d.properties.name) // what text should be displaying in the tooltip (in this case the name of the country)
-                .style("left", (event.pageX + 10) + "px") // position of the box/tooltip
+        .on("mouseover", function(event, d) {
+            d3.select(this).attr("fill", "#6699ff");
+            tooltipMap.style("display", "block")
+                .html(d.properties.name)
+                .style("left", (event.pageX + 10) + "px")
                 .style("top", (event.pageY + 10) + "px");
         })
-        .on("mouseout", function (event, d) {  // when the cursor leaves and then "resetting" the hover effects. 
-            var originalColor = akonCountries.includes(d.properties.name) ? "blue" : "grey"; // Check if the country is in akonCountries
-            d3.select(this).attr("fill", originalColor); // resetting the color back to its original state based on condition
-            tooltipMap.style("display", "none"); // removes the tooltip when not any longer hovered over the country
+        .on("mouseout", function(event, d) {
+            d3.select(this).attr("fill", akonCountries.includes(d.properties.name) ? "blue" : "grey");
+            tooltipMap.style("display", "none");
         })
-        .on("click", async function (event, d) { // click function
-            fetchAndUpdateData(d.properties.name); // fetching the data from the selected country
+        .on("click", async function(event, d) {
+            await fetchAndUpdateData(d.properties.name);
+            const currentCountryData = countryInfo[d.properties.name];
+            const infoText = currentCountryData ? currentCountryData.info : 'No information available';
+            updateInfoBox(d.properties.name, infoText);
         });
         
+        
 }
+
+function updateInfoBox(countryName, infoText) {
+    document.getElementById('infoBoxTitle').textContent = countryName;
+    document.getElementById('infoBoxText').textContent = infoText || 'No information available';
+
+    const infoHtml = `
+        <h2>${countryName}</h2>
+        <div class="infoText">${infoText || 'No detailed facts available'}</div>
+    `;
+    document.getElementById('infoFact').innerHTML = infoHtml;
+}
+

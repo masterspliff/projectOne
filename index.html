@@ -6,12 +6,20 @@
     <title>sceneIntro</title>
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/sceneIntroStyle.css">
+    <style>
+
+        #quoteOne {
+            font-family: 'Space Mono', monospace;
+
+        }
+    </style>
+
 
 </head>
 <body>
     
     <div class="quoteContainer">
-        <p id="quoteOne">There are 600 million people living without electricity in Africa</p>
+        <p id="quoteOne" data-value="There are 600 million people living without electricity in Africa">There are 600 million people living without electricity in Africa</p>
         <p id="quoteTwo" style="display:none;">"There's always been so many initiatives in Africa, so much money raised in Africa, but there's never no results and it got to the point where you get tired of it." - Akon</p>
         <p id="quoteThree" style="display:none;">"Access to energy supported the creation of jobs in small businesses, cafes, agriculture, allowed for evening classes for education, night transportation and safety. Everything is possible with electricity and people's lives and communities will be forever changed!”  — Akon</p>
     </div>
@@ -67,4 +75,38 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://unpkg.com/topojson@3"></script>
     <script src="./scripts/sceneIntro.js"></script>
+
+    <script>
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+        let interval = null;
+
+        setTimeout(() => {
+            const quoteOne = document.querySelector("#quoteOne");
+            
+            let iteration = 0;
+            
+            clearInterval(interval);
+            
+            interval = setInterval(() => {
+            quoteOne.innerText = quoteOne.innerText
+            .split("")
+            .map((letter, index) => {
+                if(index < iteration) {
+                return quoteOne.dataset.value[index];
+                }
+                
+                return letters[Math.floor(Math.random() * 26)]
+            })
+            .join("");
+            
+            if(iteration >= quoteOne.dataset.value.length){ 
+                clearInterval(interval);
+            }
+            
+            iteration += 1 / 3;
+            }, 30);
+        }, 500);
+
+    </script>
 </html>
