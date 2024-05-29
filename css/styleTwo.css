@@ -40,8 +40,70 @@ h1 {
     right: 150px;
 }
 
+/* CSS styles for about/article section */
 
+.articlesContainer {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+}
+.articlesHeader {
+    text-align: center;
+    padding: 20px 0;
+}
 
+.articlesHeader img {
+    max-width: 150px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+.artivlesHeader h1 {
+    margin: 0;
+    font-size: 2.5em;
+    color: #333;
+}
+.articles {
+    margin-top: 15px; /
+}
+.article {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.article img {
+    max-width: 200px;
+    border-radius: 10px;
+    margin-right: 20px;
+}
+.article-content {
+    flex: 2;
+}
+.article-content h2 {
+    margin: 0 0 10px 0;
+    font-size: 1.5em;
+    color: #333;
+}
+.article-content p {
+    margin: 0 0 10px 0;
+}
+.source {
+    margin-top: 10px;
+}
+.more-info {
+    background: #e8f4f8;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+.more-info a {
+    color: #000102;
+    text-decoration: none;
+    font-weight: bold;
+}
 
 /* New styles for the info box */
 .info-box {
