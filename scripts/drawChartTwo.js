@@ -1,7 +1,7 @@
 let svgChart, x, y, xAxis, yAxis, colorScale, chartDimensions;
 
 function initializeChart() {
-    const margin = { top: 100, right: 120, bottom: 30, left: 50 };
+    const margin = { top: 100, right: 120, bottom: 30, left: 70 };
     
 
     // dynamically change the svg height + width to the users screen.
@@ -217,3 +217,5 @@ document.addEventListener("DOMContentLoaded", initializeChart);
 
 // SPLIT URBAN/RUAL op med en knap
 // Stiplet linjer?
+// SMACK THAT ??
+// Inkorpere farverne fra sphere til  "How much % of the total energy consumption in Mali is renewable?"

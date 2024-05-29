@@ -15,6 +15,8 @@ async function loadCSV(url) {
     return d3.csvParse(text);
 }
 
+
+
 async function getAfricanCountriesData() {
     try {
         const response = await fetch('http://localhost:4000/african-countries-data');
@@ -34,7 +36,7 @@ async function fetchAndUpdateData(countryName) {
     try {
         const encodedCountryName = encodeURIComponent(countryName); // Properly encode the country name
         const electricityDataUrl = `http://localhost:4000/electricity-access-data/${encodedCountryName}`;
-        const hdiDataUrl = '../data/HDI_DATA_Total.json';
+        const hdiDataUrl = './data/HDI_DATA_Total.json';
 
         // Fetching both datasets concurrently using Promise.all
         const [electricityResponse, hdiResponse] = await Promise.all([
@@ -117,7 +119,7 @@ async function loadCountryInfo() {
     }
 }
 
-// TEST
+// FETCH DATA FOR LEFT CHART INFO BOX
 async function fetchAndUpdateRenewableData(countryName) {
     try {
         const csvUrl = './csv/renewableEnergyShare.csv';
@@ -126,6 +128,7 @@ async function fetchAndUpdateRenewableData(countryName) {
         const countryData = renewableData.filter(row => row.GeoAreaName === countryName);
         if (countryData.length === 0) {
             console.warn('No renewable energy data available for:', countryName);
+            
             return;
         }
 
@@ -149,20 +152,20 @@ async function fetchAndUpdateRenewableData(countryName) {
         console.error('Failed to fetch or process renewable data:', error);
     }
 }
-
+// DRAW LEFT CHART INFO BOX
 function drawRenewableChart(countryName, data, categories) {
     const svgWidth = 800;
     const svgHeight = 400;
-    const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+    const margin = { top: 50, right: 30, bottom: 40, left: 50 };
 
     const width = svgWidth - margin.left - margin.right;
     const height = svgHeight - margin.top - margin.bottom;
 
     // Clear previous SVG chart if any
-    d3.select("#infoBox svg.renewable-chart").remove();
+    d3.select("#leftChart").selectAll("*").remove();
     d3.select("#infoBox .tooltip").remove(); // Remove any existing tooltip
 
-    const svg = d3.select("#infoBox")
+    const svg = d3.select("#leftChart")
         .append("svg")
         .attr("width", svgWidth)
         .attr("height", svgHeight)
@@ -171,15 +174,15 @@ function drawRenewableChart(countryName, data, categories) {
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
     // Create a tooltip div
-    const tooltip = d3.select("#infoBox").append("div")
+    const tooltip = d3.select("body").append("div")
         .attr("class", "tooltip")
         .style("position", "absolute")
-        .style("background", "#f9f9f9")
-        .style("padding", "8px")
-        .style("border", "1px solid #d9d9d9")
-        .style("border-radius", "4px")
         .style("display", "none")
-        .style("z-index", "2000");
+        .style("padding", "10px")
+        .style("background", "white")
+        .style("border", "1px solid #ccc")
+        .style("border-radius", "5px")
+        .style("pointer-events", "none");
 
     const x = d3.scaleBand()
         .domain(data.map(d => d.year))
@@ -222,25 +225,128 @@ function drawRenewableChart(countryName, data, categories) {
 
     // Show the bars
     svg.append("g")
-        .selectAll("g")
-        .data(stackedData)
-        .enter()
+    .selectAll("g")
+    .data(stackedData)
+    .enter()
+    .append("g")
+    .attr("class", d => `bar ${d.key}`)
+    .attr("fill", d => color(d.key))
+    .selectAll("rect")
+    .data(d => d)
+    .enter()
+    .append("rect")
+    .attr("x", d => x(d.data.year))
+    .attr("y", d => y(d[1]))
+    .attr("height", d => y(d[0]) - y(d[1]))
+    .attr("width", x.bandwidth())
+    .on("mouseover", function(event, d) {
+        highlight.call(this, event, d);
+        const category = d3.select(this.parentNode).datum().key;
+        
+        tooltip
+            .html(`Category: ${category}<br>Watts per capita: ${d[1] - d[0]}W`)
+            .style("display", "block")
+            .style("left", (event.pageX + 10) + "px")
+            .style("top", (event.pageY - 10) + "px")
+    })
+    .on("mousemove", function(event) {
+        tooltip
+        .style("left", (event.pageX + 10) + "px")
+        .style("top", (event.pageY - 10) + "px")
+    })
+    .on("mouseleave", function() {
+        tooltip.style("display", "none");
+    });
+    
+    svg.append("text")
+    .attr("x", width / 2)
+    .attr("y", -10)
+    .attr("text-anchor", "middle")
+    .style("font-size", "16px")
+    .text(`What kind of renewable energy in ${countryName}?`);
+}
+
+
+// TEST 2
+async function fetchAndUpdateRenewableShareConsumption(countryName) {
+    try {
+        const csvUrl = './csv/EG_FEC_RNEW.csv';
+        const renewableData = await loadCSV(csvUrl);
+        console.log("First few rows:", renewableData.slice(0, 5));
+
+        const countryData = renewableData.filter(row => row.GeoAreaName === countryName);
+        if (countryData.length === 0) {
+            console.warn('No renewable energy data available for:', countryName);
+            console.log('Available countries:', renewableData.map(row => row.GeoAreaName).join(', ')); // Log available countries for debugging
+            return;
+        }
+
+        const years = Object.keys(countryData[0]).filter(key => !isNaN(key) && key.length === 4);
+        const formattedData = years.map(year => ({
+            year: year,
+            value: parseFloat(countryData[0][year])
+        }));
+
+        drawRenewableShareConsumptionShare(countryName, formattedData);  // Ensure the drawing function is called here
+    } catch (error) {
+        console.error('Failed to fetch or process renewable data:', error);
+    }
+}
+
+
+
+function drawRenewableShareConsumptionShare(countryName, data) {
+    const svgWidth = 800;
+    const svgHeight = 400;
+    const margin = { top: 40, right: 30, bottom: 40, left: 50 };
+
+    const width = svgWidth - margin.left - margin.right;
+    const height = svgHeight - margin.top - margin.bottom;
+
+    // Clear previous SVG chart if any
+    d3.select("#rightChart").selectAll("*").remove();
+
+    const svg = d3.select("#rightChart")
+        .append("svg")
+        .attr("width", svgWidth)
+        .attr("height", svgHeight)
+        .attr("class", "renewable-chart")
         .append("g")
-        .attr("class", d => `bar ${d.key}`)
-        .attr("fill", d => color(d.key))
-        .selectAll("rect")
-        .data(d => d)
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    const x = d3.scaleBand()
+        .domain(data.map(d => d.year))
+        .range([0, width])
+        .padding(0.2);
+
+    const y = d3.scaleLinear()
+        .domain([0, d3.max(data, d => d.value)])
+        .nice()
+        .range([height, 0]);
+
+    const tooltip = d3.select("#infoBox").append("div")
+        .attr("class", "tooltip")
+        .style("position", "absolute")
+        .style("background", "#f9f9f9")
+        .style("padding", "8px")
+        .style("border", "1px solid #d9d9d9")
+        .style("border-radius", "4px")
+        .style("display", "none")
+        .style("z-index", "2000");
+
+    // Show the bars
+    svg.selectAll("rect")
+        .data(data)
         .enter()
         .append("rect")
-        .attr("x", d => x(d.data.year))
-        .attr("y", d => y(d[1]))
-        .attr("height", d => y(d[0]) - y(d[1]))
+        .attr("x", d => x(d.year))
+        .attr("y", d => y(d.value))
+        .attr("height", d => height - y(d.value))
         .attr("width", x.bandwidth())
+        .attr("fill", "#74add1")
         .on("mouseover", function(event, d) {
-            highlight.call(this, event, d);
-            const category = d3.select(this.parentNode).datum().key;
             tooltip
-                .html(`Category: ${category}<br>Value: ${d[1] - d[0]}`)
+                .html(`Year: ${d.year}<br>Value: ${d.value}`)
                 .style("left", (event.pageX + 10) + "px")
                 .style("top", (event.pageY - 28) + "px")
                 .style("display", "block");
@@ -250,19 +356,26 @@ function drawRenewableChart(countryName, data, categories) {
                 .style("left", (event.pageX + 10) + "px")
                 .style("top", (event.pageY - 28) + "px");
         })
-        .on("mouseleave", function(event, d) {
-            unhighlight.call(this, event, d);
+        .on("mouseleave", function() {
             tooltip.style("display", "none");
         });
+
+    // Add X axis
+    svg.append("g")
+        .attr("transform", `translate(0,${height})`)
+        .call(d3.axisBottom(x).tickFormat(d3.format("d")));
+
+    // Add Y axis
+    svg.append("g")
+        .call(d3.axisLeft(y));
 
     svg.append("text")
         .attr("x", width / 2)
         .attr("y", -10)
         .attr("text-anchor", "middle")
         .style("font-size", "16px")
-        .text(`Renewable Energy Capacity in ${countryName}`);
+        .text(`How much % of the total energy consumption in ${countryName} is renewable?`);
 }
-
 
 
 
@@ -341,11 +454,14 @@ async function renderMap(countryInfo) {
         })
         .on("click", async function(event, d) {
             await fetchAndUpdateData(d.properties.name);
-            await fetchAndUpdateRenewableData(d.properties.name); // Fetch and update renewable data
+            await fetchAndUpdateRenewableData(d.properties.name);  // Draws chart in leftChart
+            await fetchAndUpdateRenewableShareConsumption(d.properties.name);  // Draws chart in rightChart
+        
             const currentCountryData = countryInfo[d.properties.name];
             const infoText = currentCountryData ? currentCountryData.info : 'No information available';
-            updateInfoBox(d.properties.name, infoText);
+            updateInfoBox(d.properties.name, infoText);  // Update textual information
         });
+        
         
         
 }
