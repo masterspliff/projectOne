@@ -204,10 +204,16 @@ function drawRenewableChart(countryName, data, categories) {
     const stackedData = d3.stack()
         .keys(categories)(data);
 
-    // Add X axis
+// Add X axis with rotated labels
     svg.append("g")
         .attr("transform", `translate(0,${height})`)
-        .call(d3.axisBottom(x).tickFormat(d3.format("d")));
+        .call(d3.axisBottom(x).tickFormat(d3.format("d")))
+        .selectAll("text") // select all the x axis texts
+        .style("text-anchor", "end")
+        .attr("dx", "-.8em")
+        .attr("dy", ".15em")
+        .attr("transform", "rotate(-65)"); // rotate the text
+
 
     // Add Y axis
     svg.append("g")
@@ -362,10 +368,16 @@ function drawRenewableShareConsumptionShare(countryName, data) {
             tooltip.style("display", "none");
         });
 
-    // Add X axis
+    // Add X axis with rotated labels
     svg.append("g")
         .attr("transform", `translate(0,${height})`)
-        .call(d3.axisBottom(x).tickFormat(d3.format("d")));
+        .call(d3.axisBottom(x).tickFormat(d3.format("d")))
+        .selectAll("text") // select all the x axis texts
+        .style("text-anchor", "end")
+        .attr("dx", "-.8em")
+        .attr("dy", ".15em")
+        .attr("transform", "rotate(-65)"); // rotate the text
+
 
     // Add Y axis
     svg.append("g")
