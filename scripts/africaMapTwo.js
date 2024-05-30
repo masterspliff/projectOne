@@ -267,7 +267,7 @@ function drawRenewableChart(countryName, data, categories) {
 }
 
 
-// TEST 2
+// FETCH DATA FOR RIGHT CHART INFO BOX
 async function fetchAndUpdateRenewableShareConsumption(countryName) {
     try {
         const csvUrl = './csv/EG_FEC_RNEW.csv';
@@ -292,9 +292,7 @@ async function fetchAndUpdateRenewableShareConsumption(countryName) {
         console.error('Failed to fetch or process renewable data:', error);
     }
 }
-
-
-
+// DRAW RIGHT CHART INFO BOX
 function drawRenewableShareConsumptionShare(countryName, data) {
     const svgWidth = 800;
     const svgHeight = 400;
@@ -320,7 +318,7 @@ function drawRenewableShareConsumptionShare(countryName, data) {
         .padding(0.2);
 
     const y = d3.scaleLinear()
-        .domain([0, d3.max(data, d => d.value)])
+        y.domain([0, 100])   
         .nice()
         .range([height, 0]);
 
@@ -367,7 +365,7 @@ function drawRenewableShareConsumptionShare(countryName, data) {
 
     // Add Y axis
     svg.append("g")
-        .call(d3.axisLeft(y));
+        .call(d3.axisLeft(y).tickFormat(d => `${d}%`));
 
     svg.append("text")
         .attr("x", width / 2)
