@@ -36,7 +36,7 @@ async function fetchAndUpdateData(countryName) {
     try {
         const encodedCountryName = encodeURIComponent(countryName); // Properly encode the country name
         const electricityDataUrl = `http://localhost:4000/electricity-access-data/${encodedCountryName}`;
-        const hdiDataUrl = './data/HDI_DATA_Total.json';
+        const hdiDataUrl = '../../data/HDI_DATA_Total.json';
 
         // Fetching both datasets concurrently using Promise.all
         const [electricityResponse, hdiResponse] = await Promise.all([
@@ -122,7 +122,7 @@ async function loadCountryInfo() {
 // FETCH DATA FOR LEFT CHART INFO BOX
 async function fetchAndUpdateRenewableData(countryName) {
     try {
-        const csvUrl = './csv/renewableEnergyShare.csv';
+        const csvUrl = '/csv/renewableEnergyShare.csv';
         const renewableData = await loadCSV(csvUrl);
 
         const countryData = renewableData.filter(row => row.GeoAreaName === countryName);
@@ -156,8 +156,8 @@ async function fetchAndUpdateRenewableData(countryName) {
 function drawRenewableChart(countryName, data, categories) {
     
     
-    const svgWidth = 450;
-    const svgHeight = 250;
+    const svgWidth = 600;
+    const svgHeight = 350;
     const margin = { top: 50, right: 30, bottom: 40, left: 50 };
 
     const width = svgWidth - margin.left - margin.right;
@@ -278,7 +278,7 @@ function drawRenewableChart(countryName, data, categories) {
 // FETCH DATA FOR RIGHT CHART INFO BOX
 async function fetchAndUpdateRenewableShareConsumption(countryName) {
     try {
-        const csvUrl = './csv/EG_FEC_RNEW.csv';
+        const csvUrl = '../../csv/EG_FEC_RNEW.csv';
         const renewableData = await loadCSV(csvUrl);
         console.log("First few rows:", renewableData.slice(0, 5));
 
@@ -304,8 +304,8 @@ async function fetchAndUpdateRenewableShareConsumption(countryName) {
 function drawRenewableShareConsumptionShare(countryName, data) {
 
 
-    const svgWidth = 450;
-    const svgHeight = 250;
+    const svgWidth = 600;
+    const svgHeight = 350;
     const margin = { top: 40, right: 30, bottom: 40, left: 100 };
 
     const width = svgWidth - margin.left - margin.right;

@@ -273,7 +273,7 @@ body {
     border-color: #333;
     border-style: double;
     border-width: 5px;
-    background: url('../public/akonCity.jpg') no-repeat center center;
+    background: url('../akonCity.jpg') no-repeat center center;
     background-size: cover;
     filter: brightness(50%);
     z-index: -1; /* Ensures it stays behind other content */
