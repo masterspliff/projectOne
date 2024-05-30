@@ -231,3 +231,93 @@ body {
     position: absolute;
     top: 0px;
 }
+
+
+
+
+/* Base styling for the container when inactive */
+.whoIsAkon.akonInactive {
+    position: relative;
+    cursor: pointer;
+    width: 5%; /* Initial width of the icon */
+    height: auto;
+    transition: all 5.5s ease-in-out; 
+
+}
+
+.whoIsAkon.akonActive {
+    width: 100%; /* Full viewport width when active */
+    height: 100vh; /* Full viewport height */
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+    transition: all 10.5s ease-in-out; /* Adjusted to more reasonable duration */
+    
+}
+
+.whoIsAkon.akonActive::before {
+    content: ""; /* Necessary for "pseudo-elements" ????*/
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 20px;
+    border-radius: 25px;
+    border-color: #333;
+    border-style: double;
+    border-width: 5px;
+    background: url('../public/akonCity.jpg') no-repeat center center;
+    background-size: cover;
+    filter: brightness(50%);
+    z-index: -1; /* Ensures it stays behind other content */
+    transition: all 5.5s ease-in-out; 
+
+}
+
+/* Styling for the icon */
+.akonIcon {
+    position: absolute;
+    left: 0%;
+    width: 40%;
+    cursor: pointer;
+}
+
+/* Styling for the information box */
+.akonIconInfo {
+    display: none;
+    position: absolute;
+    right: 1%;
+    top: 20px;
+    width: 50%;
+    background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+    box-shadow: -4px 0 6px rgba(0,0,0,0.1);
+    border-radius: 25px;
+    margin: 20px;
+    transition: all 10.5s ease-in-out; /* Adjusted to more reasonable duration */
+
+}
+
+.akonIconInfo.akonActive {
+    display: block; /* Show when active */
+}
+
+/* Styling for the exit button */
+.exit-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+/* Content styling */
+.infoContent {
+    padding: 20px;
+    overflow-y: auto;
+}
+
+
+.section {
+    text-align: left;
+}
+
