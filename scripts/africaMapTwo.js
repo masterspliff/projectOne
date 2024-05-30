@@ -6,6 +6,17 @@ async function loadJSON(url) {
     return response.json();
 }
 
+async function loadCSV(url) {
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const text = await response.text();
+    return d3.csvParse(text);
+}
+
+
+
 async function getAfricanCountriesData() {
     try {
         const response = await fetch('http://localhost:4000/african-countries-data');
@@ -25,7 +36,7 @@ async function fetchAndUpdateData(countryName) {
     try {
         const encodedCountryName = encodeURIComponent(countryName); // Properly encode the country name
         const electricityDataUrl = `http://localhost:4000/electricity-access-data/${encodedCountryName}`;
-        const hdiDataUrl = '../data/HDI_DATA_Total.json';
+        const hdiDataUrl = './data/HDI_DATA_Total.json';
 
         // Fetching both datasets concurrently using Promise.all
         const [electricityResponse, hdiResponse] = await Promise.all([
@@ -97,20 +108,305 @@ async function fetchAndUpdateData(countryName) {
     }
 }
 
+async function loadCountryInfo() {
+    try {
+        const url = './data/countryInfo.json'; 
+        const response = await fetch(url);
+        return response.json(); 
+    } catch (error) {
+        console.error('Failed to load country information:', error);
+        return {};
+    }
+}
 
+// FETCH DATA FOR LEFT CHART INFO BOX
+async function fetchAndUpdateRenewableData(countryName) {
+    try {
+        const csvUrl = './csv/renewableEnergyShare.csv';
+        const renewableData = await loadCSV(csvUrl);
+
+        const countryData = renewableData.filter(row => row.GeoAreaName === countryName);
+        if (countryData.length === 0) {
+            console.warn('No renewable energy data available for:', countryName);
+            
+            return;
+        }
+
+        const categories = [ "BIOENERGY", "GEOTHERMAL", "HYDROPOWER", "MARINE", "SOLAR", "WIND"];
+
+        const years = Object.keys(countryData[0]).filter(key => !isNaN(key) && key.length === 4);
+
+        const data = years.map(year => {
+            const yearData = { year: parseInt(year, 10) };
+            categories.forEach(category => {
+                const categoryData = countryData.find(row => row['Type of renewable technology'] === category);
+                yearData[category] = categoryData ? parseFloat(categoryData[year]) : 0;
+            });
+            return yearData;
+        });
+
+        console.log("Formatted renewable energy data for chart:", data);
+
+        drawRenewableChart(countryName, data, categories);
+    } catch (error) {
+        console.error('Failed to fetch or process renewable data:', error);
+    }
+}
+// DRAW LEFT CHART INFO BOX
+function drawRenewableChart(countryName, data, categories) {
+    
+    
+    const svgWidth = 450;
+    const svgHeight = 250;
+    const margin = { top: 50, right: 30, bottom: 40, left: 50 };
+
+    const width = svgWidth - margin.left - margin.right;
+    const height = svgHeight - margin.top - margin.bottom;
+
+    // Clear previous SVG chart if any
+    d3.select("#leftChart").selectAll("*").remove();
+    d3.select("#infoBox .tooltip").remove(); // Remove any existing tooltip
+
+    const svg = d3.select("#leftChart")
+        .append("svg")
+        .attr("width", svgWidth)
+        .attr("height", svgHeight)
+        .attr("class", "renewable-chart") // Add a class for easier selection
+        .append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    // Create a tooltip div
+    const tooltip = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("position", "absolute")
+        .style("display", "none")
+        .style("padding", "10px")
+        .style("background", "white")
+        .style("border", "1px solid #ccc")
+        .style("border-radius", "5px")
+        .style("pointer-events", "none");
+
+    const x = d3.scaleBand()
+        .domain(data.map(d => d.year))
+        .range([0, width])
+        .padding(0.2);
+
+    const y = d3.scaleLinear()
+        .domain([0, d3.max(data, d => d3.sum(categories, key => d[key]))])
+        .nice()
+        .range([height, 0]);
+
+    const color = d3.scaleOrdinal()
+        .domain(categories)
+        .range(d3.schemeCategory10);
+
+    // Stack the data
+    const stackedData = d3.stack()
+        .keys(categories)(data);
+
+// Add X axis with rotated labels
+    svg.append("g")
+        .attr("transform", `translate(0,${height})`)
+        .call(d3.axisBottom(x).tickFormat(d3.format("d")))
+        .selectAll("text") // select all the x axis texts
+        .style("text-anchor", "end")
+        .attr("dx", "-.8em")
+        .attr("dy", ".15em")
+        .attr("transform", "rotate(-65)"); // rotate the text
+
+
+    // Add Y axis
+    svg.append("g")
+        .call(d3.axisLeft(y));
+
+    // Highlight function
+    const highlight = function(event, d) {
+        const category = d3.select(this.parentNode).datum().key;
+        d3.selectAll(".bar").style("opacity", 0.2);
+        d3.selectAll(`.bar.${category}`).style("opacity", 1);
+    };
+
+    // Unhighlight function
+    const unhighlight = function(event, d) {
+        d3.selectAll(".bar").style("opacity", 1);
+    };
+
+    // Show the bars
+    svg.append("g")
+    .selectAll("g")
+    .data(stackedData)
+    .enter()
+    .append("g")
+    .attr("class", d => `bar ${d.key}`)
+    .attr("fill", d => color(d.key))
+    .selectAll("rect")
+    .data(d => d)
+    .enter()
+    .append("rect")
+    .attr("x", d => x(d.data.year))
+    .attr("y", d => y(d[1]))
+    .attr("height", d => y(d[0]) - y(d[1]))
+    .attr("width", x.bandwidth())
+    .on("mouseover", function(event, d) {
+        highlight.call(this, event, d);
+        const category = d3.select(this.parentNode).datum().key;
+        
+        tooltip
+            .html(`Category: ${category}<br>Watts per capita: ${d[1] - d[0]}W`)
+            .style("display", "block")
+            .style("left", (event.pageX + 10) + "px")
+            .style("top", (event.pageY - 10) + "px")
+    })
+    .on("mousemove", function(event) {
+        tooltip
+        .style("left", (event.pageX + 10) + "px")
+        .style("top", (event.pageY - 10) + "px")
+    })
+    .on("mouseleave", function() {
+        tooltip.style("display", "none");
+    });
+    
+    svg.append("text")
+    .attr("x", width / 2)
+    .attr("y", -10)
+    .attr("text-anchor", "middle")
+    .style("font-size", "10px")
+    .text(`What kind of renewable energy in ${countryName}?`);
+}
+
+
+// FETCH DATA FOR RIGHT CHART INFO BOX
+async function fetchAndUpdateRenewableShareConsumption(countryName) {
+    try {
+        const csvUrl = './csv/EG_FEC_RNEW.csv';
+        const renewableData = await loadCSV(csvUrl);
+        console.log("First few rows:", renewableData.slice(0, 5));
+
+        const countryData = renewableData.filter(row => row.GeoAreaName === countryName);
+        if (countryData.length === 0) {
+            console.warn('No renewable energy data available for:', countryName);
+            console.log('Available countries:', renewableData.map(row => row.GeoAreaName).join(', ')); // Log available countries for debugging
+            return;
+        }
+
+        const years = Object.keys(countryData[0]).filter(key => !isNaN(key) && key.length === 4);
+        const formattedData = years.map(year => ({
+            year: year,
+            value: parseFloat(countryData[0][year])
+        }));
+
+        drawRenewableShareConsumptionShare(countryName, formattedData);  // Ensure the drawing function is called here
+    } catch (error) {
+        console.error('Failed to fetch or process renewable data:', error);
+    }
+}
+// DRAW RIGHT CHART INFO BOX
+function drawRenewableShareConsumptionShare(countryName, data) {
+
+
+    const svgWidth = 450;
+    const svgHeight = 250;
+    const margin = { top: 40, right: 30, bottom: 40, left: 100 };
+
+    const width = svgWidth - margin.left - margin.right;
+    const height = svgHeight - margin.top - margin.bottom;
+
+    // Clear previous SVG chart if any
+    d3.select("#rightChart").selectAll("*").remove();
+
+    const svg = d3.select("#rightChart")
+        .append("svg")
+        .attr("width", svgWidth)
+        .attr("height", svgHeight)
+        .attr("class", "renewable-chart")
+        .append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    const x = d3.scaleBand()
+        .domain(data.map(d => d.year))
+        .range([0, width])
+        .padding(0.2);
+
+    const y = d3.scaleLinear()
+        y.domain([0, 100])   
+        .nice()
+        .range([height, 0]);
+
+    const tooltip = d3.select("#infoBox").append("div")
+        .attr("class", "tooltip")
+        .style("position", "absolute")
+        .style("background", "#f9f9f9")
+        .style("padding", "8px")
+        .style("border", "1px solid #d9d9d9")
+        .style("border-radius", "4px")
+        .style("display", "none")
+        .style("z-index", "2000");
+
+    // Show the bars
+    svg.selectAll("rect")
+        .data(data)
+        .enter()
+        .append("rect")
+        .attr("x", d => x(d.year))
+        .attr("y", d => y(d.value))
+        .attr("height", d => height - y(d.value))
+        .attr("width", x.bandwidth())
+        .attr("fill", "#74add1")
+        .on("mouseover", function(event, d) {
+            tooltip
+                .html(`Year: ${d.year}<br>Value: ${d.value}`)
+                .style("left", (event.pageX + 10) + "px")
+                .style("top", (event.pageY - 28) + "px")
+                .style("display", "block");
+        })
+        .on("mousemove", function(event) {
+            tooltip
+                .style("left", (event.pageX + 10) + "px")
+                .style("top", (event.pageY - 28) + "px");
+        })
+        .on("mouseleave", function() {
+            tooltip.style("display", "none");
+        });
+
+    // Add X axis with rotated labels
+    svg.append("g")
+        .attr("transform", `translate(0,${height})`)
+        .call(d3.axisBottom(x).tickFormat(d3.format("d")))
+        .selectAll("text") // select all the x axis texts
+        .style("text-anchor", "end")
+        .attr("dx", "-.8em")
+        .attr("dy", ".15em")
+        .attr("transform", "rotate(-65)"); // rotate the text
+
+
+    // Add Y axis
+    svg.append("g")
+        .call(d3.axisLeft(y).tickFormat(d => `${d}%`));
+
+    svg.append("text")
+        .attr("x", width / 2)
+        .attr("y", -10)
+        .attr("text-anchor", "middle")
+        .style("font-size", "10px")
+        .html(`How much % of the total energy consumption in ${countryName} is renewable?`);
+}
+
+
+
+
+document.addEventListener('DOMContentLoaded', async function() {
+    console.log('DOM fully loaded and parsed');
+    countryInfo = await loadCountryInfo(); // Load the country information once and use it later
+    renderMap(countryInfo);
+    window.addEventListener('resize', () => renderMap(countryInfo)); // Re-render map on window resize
+});
 
 const akonCountries = ["Mali","Niger", "Senegal", "Guinea", "Burkina Faso", "Sierra Leone", "Benin"," Equatorial Guinea", "Gabon",
         "Republic of Congo","Namibia","Madagascar","Kenya","Nigeria"];
 
 const margin = { top: 10, right: 10, bottom: 10, left: 10 };
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM fully loaded and parsed');
-    renderMap();
-    window.addEventListener('resize', renderMap); // Re-render map on window resize
-});
-
-async function renderMap() {
+async function renderMap(countryInfo) {
     // Clear existing SVG
     d3.select("#mapContainer").selectAll("*").remove();
 
@@ -124,7 +420,7 @@ async function renderMap() {
           .append("g")
           .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    const tooltipMap = d3.select("body") // css styling for the tooltip
+    const tooltipMap = d3.select("body")
         .append("div")
         .attr("class", "tooltip")
         .style("position", "absolute")
@@ -135,51 +431,64 @@ async function renderMap() {
         .style("display", "none")
         .style("z-index", "1001");
 
-    const africanCountries = await getAfricanCountriesData(); // creating new variable and storing the data from the db. await till its loaded
-    console.log('Own list of African countries:', africanCountries); // checks if the countries are loaded correctly.
+    const africanCountries = await getAfricanCountriesData();
+    console.log('Own list of African countries:', africanCountries);
 
-    const geoData = await loadJSON("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson"); // world map json with svg properties etc. 
-    const africaGeoData = geoData.features.filter(d => africanCountries.includes(d.properties.name)); // filter out all unnecessary countries unrelated to Africa. 
-    
+    const geoData = await loadJSON("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson");
+    const africaGeoData = geoData.features.filter(d => africanCountries.includes(d.properties.name));
     console.log('Filtered list of African countries:', africaGeoData);
-    let missingCountries = africanCountries.filter(country => !africaGeoData.some(geoCountry => geoCountry.properties.name === country));
 
+    let missingCountries = africanCountries.filter(country => !africaGeoData.some(geoCountry => geoCountry.properties.name === country));
     console.log('Missing countries:', missingCountries);
-    // setting up the map projection and geographic paths
+
     const projection = d3.geoMercator()
                          .scale(containerWidth / 2)
-                         .translate([containerWidth / 2, containerHeight / 2]); // center the map in the container
+                         .translate([containerWidth / 2, containerHeight / 2]);
 
-    const path = d3.geoPath().projection(projection); // setting up the svg data using geographic features. essentially using the mercator projector, so d3 can use the path generator to draw the map. 
+    const path = d3.geoPath().projection(projection);
 
     svgMap.selectAll("path")
         .data(africaGeoData)
         .enter()
         .append("path")
         .attr("d", path)
-        .attr("fill", function(d) {
-            if (akonCountries.includes(d.properties.name)) {
-                return "blue"; // color for countries in akonCountries list
-            } else {
-                return "grey"; // color for other countries
-            }
-        })
+        .attr("fill", function(d) { return akonCountries.includes(d.properties.name) ? "blue" : "grey"; })
         .attr("stroke", "black")
         .attr("stroke-width", 0.5)
-        .on("mouseover", function (event, d) { // hover effects starts here
-            d3.select(this).attr("fill", "#6699ff");  // added color when hovering over a country.
-            tooltipMap.style("display", "block") // displaying the country name when hovering
-                .html(d.properties.name) // what text should be displaying in the tooltip (in this case the name of the country)
-                .style("left", (event.pageX + 10) + "px") // position of the box/tooltip
+        .on("mouseover", function(event, d) {
+            d3.select(this).attr("fill", "#6699ff");
+            tooltipMap.style("display", "block")
+                .html(d.properties.name)
+                .style("left", (event.pageX + 10) + "px")
                 .style("top", (event.pageY + 10) + "px");
         })
-        .on("mouseout", function (event, d) {  // when the cursor leaves and then "resetting" the hover effects. 
-            var originalColor = akonCountries.includes(d.properties.name) ? "blue" : "grey"; // Check if the country is in akonCountries
-            d3.select(this).attr("fill", originalColor); // resetting the color back to its original state based on condition
-            tooltipMap.style("display", "none"); // removes the tooltip when not any longer hovered over the country
+        .on("mouseout", function(event, d) {
+            d3.select(this).attr("fill", akonCountries.includes(d.properties.name) ? "blue" : "grey");
+            tooltipMap.style("display", "none");
         })
-        .on("click", async function (event, d) { // click function
-            fetchAndUpdateData(d.properties.name); // fetching the data from the selected country
+        .on("click", async function(event, d) {
+            await fetchAndUpdateData(d.properties.name);
+            await fetchAndUpdateRenewableData(d.properties.name);  // Draws chart in leftChart
+            await fetchAndUpdateRenewableShareConsumption(d.properties.name);  // Draws chart in rightChart
+        
+            const currentCountryData = countryInfo[d.properties.name];
+            const infoText = currentCountryData ? currentCountryData.info : 'No information available';
+            updateInfoBox(d.properties.name, infoText);  // Update textual information
         });
         
+        
+        
 }
+
+function updateInfoBox(countryName, infoText) {
+    document.getElementById('infoBoxTitle').textContent = countryName;
+    document.getElementById('infoBoxText').textContent = infoText || 'No information available';
+
+    const infoHtml = `
+        <h2>${countryName}</h2>
+        <div class="infoText">${infoText || 'No detailed facts available'}</div>
+        <br><br>
+    `;
+    document.getElementById('infoFact').innerHTML = infoHtml;
+}
+

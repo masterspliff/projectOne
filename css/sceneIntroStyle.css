@@ -39,7 +39,7 @@
     align-items: center;
     justify-content: center;
     height: 10vh;
-    font-family: helvetica;
+    font-family: 'Space Mono', monospace;
     font-size: 35px; 
     font-style: bold;
 }
@@ -71,7 +71,7 @@
     top: 50%;            /* Position the element vertically */
     transform: translateY(-50%); /* Center the element vertically */
     width: 38%;
-    font-family: Helvetica;  
+    font-family: 'Space Mono', monospace;
     font-size: 27px; 
     opacity: 0; 
 }

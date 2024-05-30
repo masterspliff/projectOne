@@ -1,7 +1,7 @@
 let svgChart, x, y, xAxis, yAxis, colorScale, chartDimensions;
 
 function initializeChart() {
-    const margin = { top: 100, right: 120, bottom: 30, left: 50 };
+    const margin = { top: 100, right: 120, bottom: 50, left: 70 };
     
 
     // dynamically change the svg height + width to the users screen.
@@ -26,23 +26,9 @@ function initializeChart() {
     xAxis = svgChart.append("g")
         .attr("transform", `translate(0,${height})`)
         .style("font-weight", "bold")  // Make the x-axis labels bold
-        .style("font-size", (d) => {
-            if (d === "2000" || d === "2014") {
-                return "20px";
-            } else {
-                return "10px";
-            }
-        });
+        .style("font-size", "15px");
 
-    // Apply color styles separately
-    xAxis.selectAll("text")
-        .style("fill", (d) => {
-            if (d === "2014") {
-                return "blue";
-            } else {
-                return "black";  // Default color
-            }
-        });
+
 
     // All the styling applied to y-axis
     yAxis = svgChart.append("g")
@@ -217,3 +203,5 @@ document.addEventListener("DOMContentLoaded", initializeChart);
 
 // SPLIT URBAN/RUAL op med en knap
 // Stiplet linjer?
+// SMACK THAT ??
+// Inkorpere farverne fra sphere til  "How much % of the total energy consumption in Mali is renewable?"

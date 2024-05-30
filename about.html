@@ -1,29 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Map and Graph Layout</title>
     <link rel="stylesheet" href="./css/styleTwo.css">
 </head>
+
+
+
+
+
+
+
+
+
+
+
+
 <body class="bodyTwo">
 
-
+    <div class="whoIsAkon akonInactive" onclick="toggleInfoBox(event)">
+        <img src="./public/akon.png" alt="Akon" class="akonIcon">
+        <div id="akonBox" class="akonIconInfo akonInactive">
+            <button onclick="toggleInfoBox(event)" class="exit-button">X</button>
+            <div class="infoContent">
+                <h2 style="font-size: 40px;">Akon</h2>
+                <div class="section">
+                    <p>Ever wonder about the multi-talented artist behind hits like “Smack That” and “Lonely”? Meet Akon, not only a renowned singer and record producer but also a visionary entrepreneur and philanthropist who's making significant strides in both the music industry and sustainable development.</p>
+                </div>
+    
+                <div class="section">
+                    <h2>From Beats to Kilowatts</h2>
+                    <p>Aliaune Thiam, better known as Akon, emerged on the global stage in the early 2000s, captivating audiences with his smooth voice and compelling rhythms. Beyond his Grammy-nominated musical career, Akon has been pioneering efforts that fuse innovation with social impact, particularly through his initiative, Akon Lighting Africa.</p>
+                </div>
+    
+                <div class="section">
+                    <h2>Illuminating Innovation</h2>
+                    <p>Launched in 2014, Akon Lighting Africa aims to address the energy deficit in numerous African countries by harnessing solar power to provide sustainable electricity solutions. For those of us in tech, the project isn't just about adding solar panels—it's about integrating sustainable energy solutions to improve daily living standards dramatically. Akon's project has already brought light to millions, reducing carbon footprints and fostering economic growth through increased access to electricity.</p>
+                </div>
+    
+                <div class="section">
+                    <h2>Akon City: A Vision of the Future</h2>
+                    <p>Taking his visionary approach a step further, Akon is developing Akon City in Senegal, planned as a sustainable smart city and expected to operate fully on renewable energy sources with a digital cash economy powered by his own cryptocurrency, Akoin. For programmers and tech enthusiasts, Akon City represents an intriguing real-world application of blockchain technology and sustainable urban development.</p>
+                </div>
+    
+                <div class="section">
+                    <h2>Akoin: Empowering Through Technology</h2>
+                    <p>Akoin is more than a cryptocurrency; it's a cornerstone of Akon's strategy to empower young entrepreneurs in Africa. By providing a stable medium of exchange, Akoin aims to facilitate economic stability and support entrepreneurs in overcoming the volatility often associated with African currencies. For those of us in the tech world, Akoin presents an interesting case study in using blockchain for social impact.</p>
+                </div>
+    
+                <div class="section">
+                    <h2>The Broader Impact</h2>
+                    <p>Akon's initiatives highlight a key intersection of technology and philanthropy. Through Akon Lighting Africa, there is an observable reduction in crime rates, improved educational opportunities, and enhanced local economies. These outcomes demonstrate how technology can be leveraged for widespread social benefit—proving that strategic innovation can address complex global challenges effectively.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    
+    
+    
+    
+    
     
     <div class="container">
         <h1>AKON Lighting</h1>
         <div class="content">
             <div id="mapContainer" class="map">
-                <!-- Map content will be inserted here by the script -->
+
             </div>
             <div id="graphContainer" class="graph">
-                <!-- Graph content will go here -->
+                <legend id="graphLegend">How many has access to electricity in Africa?</legend>
             </div>
         </div>
         <div id="infoBox" class="info-box">
-            <!-- Info box content will go here -->
-            <p>This is the info box.</p>
+            <span id="infoBoxTitle" style="display: none;"> Please select a country</span>
+            <span id="infoBoxText" style="display: none;"></span>
+            <span id="infoFact"></span>
+
+            <div class="chart-container">
+                <div id="leftChart" class="chart"></div>
+                <div id="rightChart" class="chart"></div>
+            </div>
         </div>
+        
     </div>
 
     <div class="articlesContainer">
@@ -35,12 +98,60 @@
         </div> 
     </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://unpkg.com/topojson@3"></script>
     <script src="./scripts/africaMapTwo.js"></script>
     <script src="./scripts/drawChartTwo.js"></script>
-    <script src="./scripts/chart.js"></script>
     <script src="./scripts/sources.js"></script>
+
+    <script>
+
+
+function toggleInfoBox(event) {
+    event.stopPropagation(); // Prevent the event from bubbling up to higher elements
+    var akonBox = document.getElementById('akonBox');
+    var container = document.querySelector('.whoIsAkon');
+    akonBox.classList.toggle('akonActive');
+    akonBox.classList.toggle('akonInactive');
+    container.classList.toggle('akonActive');
+    container.classList.toggle('akonInactive');
+}
+
+
+
+    </script>
 
 </body>
 </html>
