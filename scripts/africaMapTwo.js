@@ -154,8 +154,10 @@ async function fetchAndUpdateRenewableData(countryName) {
 }
 // DRAW LEFT CHART INFO BOX
 function drawRenewableChart(countryName, data, categories) {
-    const svgWidth = 800;
-    const svgHeight = 400;
+    
+    
+    const svgWidth = 450;
+    const svgHeight = 250;
     const margin = { top: 50, right: 30, bottom: 40, left: 50 };
 
     const width = svgWidth - margin.left - margin.right;
@@ -202,10 +204,16 @@ function drawRenewableChart(countryName, data, categories) {
     const stackedData = d3.stack()
         .keys(categories)(data);
 
-    // Add X axis
+// Add X axis with rotated labels
     svg.append("g")
         .attr("transform", `translate(0,${height})`)
-        .call(d3.axisBottom(x).tickFormat(d3.format("d")));
+        .call(d3.axisBottom(x).tickFormat(d3.format("d")))
+        .selectAll("text") // select all the x axis texts
+        .style("text-anchor", "end")
+        .attr("dx", "-.8em")
+        .attr("dy", ".15em")
+        .attr("transform", "rotate(-65)"); // rotate the text
+
 
     // Add Y axis
     svg.append("g")
@@ -262,7 +270,7 @@ function drawRenewableChart(countryName, data, categories) {
     .attr("x", width / 2)
     .attr("y", -10)
     .attr("text-anchor", "middle")
-    .style("font-size", "16px")
+    .style("font-size", "10px")
     .text(`What kind of renewable energy in ${countryName}?`);
 }
 
@@ -294,9 +302,11 @@ async function fetchAndUpdateRenewableShareConsumption(countryName) {
 }
 // DRAW RIGHT CHART INFO BOX
 function drawRenewableShareConsumptionShare(countryName, data) {
-    const svgWidth = 800;
-    const svgHeight = 400;
-    const margin = { top: 40, right: 30, bottom: 40, left: 50 };
+
+
+    const svgWidth = 450;
+    const svgHeight = 250;
+    const margin = { top: 40, right: 30, bottom: 40, left: 100 };
 
     const width = svgWidth - margin.left - margin.right;
     const height = svgHeight - margin.top - margin.bottom;
@@ -358,10 +368,16 @@ function drawRenewableShareConsumptionShare(countryName, data) {
             tooltip.style("display", "none");
         });
 
-    // Add X axis
+    // Add X axis with rotated labels
     svg.append("g")
         .attr("transform", `translate(0,${height})`)
-        .call(d3.axisBottom(x).tickFormat(d3.format("d")));
+        .call(d3.axisBottom(x).tickFormat(d3.format("d")))
+        .selectAll("text") // select all the x axis texts
+        .style("text-anchor", "end")
+        .attr("dx", "-.8em")
+        .attr("dy", ".15em")
+        .attr("transform", "rotate(-65)"); // rotate the text
+
 
     // Add Y axis
     svg.append("g")
@@ -371,8 +387,8 @@ function drawRenewableShareConsumptionShare(countryName, data) {
         .attr("x", width / 2)
         .attr("y", -10)
         .attr("text-anchor", "middle")
-        .style("font-size", "16px")
-        .text(`How much % of the total energy consumption in ${countryName} is renewable?`);
+        .style("font-size", "10px")
+        .html(`How much % of the total energy consumption in ${countryName} is renewable?`);
 }
 
 
