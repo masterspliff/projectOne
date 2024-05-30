@@ -161,6 +161,10 @@ function drawChart(selectedCountriesData) {
                 .ease(d3.easeLinear)
                 .attr("stroke-dashoffset", 0);
         }
+        // Regulates the lines opacity.
+        if (countryData.category === 'RURAL' || countryData.category === 'URBAN') {
+            path.style("opacity", 0.3);
+        }
 
         // Correctly handle the enter selection for circles
         const circles = svgChart.selectAll(`circle.${countryData.GeoAreaName}.${countryData.category}`)
@@ -179,6 +183,12 @@ function drawChart(selectedCountriesData) {
             .attr("r", 4)
             .attr("fill", colorScale(countryData.category));
 
+
+            // Regulates the circles opacity.
+            if (countryData.category === 'RURAL' || countryData.category === 'URBAN') {
+                circles.style("opacity", 0.3);
+            }
+    
         // Adding tooltip interaction
         circles.on("mouseover", function(event, d) {
             d3.select(this).transition().attr("r", 6);
