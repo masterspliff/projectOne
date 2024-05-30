@@ -312,8 +312,12 @@ body {
 /* Content styling */
 .infoContent {
     padding: 20px;
-    overflow-y: auto;
+    overflow-y: auto; /* Enables vertical scrolling if the content overflows */
+    max-height: 900px; /* Sets a maximum height for the content area */
 }
+
+
+
 
 
 .section {
