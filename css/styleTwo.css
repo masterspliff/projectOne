@@ -292,11 +292,10 @@ body {
     top: 20px;
     width: 50%;
     background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
-    box-shadow: -4px 0 6px rgba(0,0,0,0.1);
+    box-shadow: 0px 0px 100px rgba(0,0,0,1);
     border-radius: 25px;
     margin: 20px;
-    transition: all 10.5s ease-in-out; /* Adjusted to more reasonable duration */
-
+    
 }
 
 .akonIconInfo.akonActive {
