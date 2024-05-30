@@ -132,7 +132,7 @@ async function fetchAndUpdateRenewableData(countryName) {
             return;
         }
 
-        const categories = ["ALL", "BIOENERGY", "GEOTHERMAL", "HYDROPOWER", "MARINE", "SOLAR", "WIND"];
+        const categories = [ "BIOENERGY", "GEOTHERMAL", "HYDROPOWER", "MARINE", "SOLAR", "WIND"];
 
         const years = Object.keys(countryData[0]).filter(key => !isNaN(key) && key.length === 4);
 

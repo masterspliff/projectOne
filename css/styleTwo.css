@@ -1,5 +1,6 @@
+
 .bodyTwo {
-    font-family: Arial, sans-serif;
+    font-family: 'Space Mono', monospace;
     text-align: center;
 }
 
@@ -225,3 +226,8 @@ body {
 }
 
 
+
+#graphLegend {
+    position: absolute;
+    top: 0px;
+}
