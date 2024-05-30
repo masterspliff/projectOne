@@ -14,6 +14,17 @@ app.use((req, res, next) => {
   });
 
   
+const path = require('path')
+app.use(express.static(path.join(__dirname, '../public')));
+  
+app.get("/", (request, response) => {
+    const filePath = path.resolve(__dirname, 'public/pages/index.html');
+    console.log(`Trying to send file from: ${filePath}`);
+    response.sendFile(filePath);
+});
+
+
+
 app.post('/upload-csv', async (req, res) => {
     const { filePath, tableName } = req.body;
 
