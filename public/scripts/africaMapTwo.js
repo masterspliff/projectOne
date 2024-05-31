@@ -19,7 +19,7 @@ async function loadCSV(url) {
 
 async function getAfricanCountriesData() {
     try {
-        const response = await fetch('http://localhost:4000/african-countries-data');
+        const response = await fetch('https://projectone-nehw.onrender.com/african-countries-data');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -35,7 +35,7 @@ async function getAfricanCountriesData() {
 async function fetchAndUpdateData(countryName) {
     try {
         const encodedCountryName = encodeURIComponent(countryName); // Properly encode the country name
-        const electricityDataUrl = `http://localhost:4000/electricity-access-data/${encodedCountryName}`;
+        const electricityDataUrl = `https://projectone-nehw.onrender.com/electricity-access-data/${encodedCountryName}`;
         const hdiDataUrl = '../../data/HDI_DATA_Total.json';
 
         // Fetching both datasets concurrently using Promise.all

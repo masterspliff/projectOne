@@ -8,7 +8,7 @@ async function loadJSON(url) {
 
 async function ElectricityAccessData() {
     try {
-        const response = await fetch('http://localhost:4000/get-sphere-data');
+        const response = await fetch('https://projectone-nehw.onrender.com/get-sphere-data');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
